@@ -1,0 +1,71 @@
+{
+  "scripts": {
+    "skel": "gulp skel",
+    "test": "tape -r babel-register",
+    "dev": "NODE_ENV=development gulp dev",
+    "build": "NODE_ENV=production gulp build"
+  },
+  "dependencies": {
+    "babel-plugin-transform-class-properties": "^6.6.0",
+    "babel-plugin-transform-object-rest-spread": "^6.6.5",
+    "babel-preset-es2015-node5": "latest",
+    "babel-preset-react": "latest",
+    "babel-register": "latest",
+    "body-parser": "^1.15.0",
+    "escape-html": "^1.0.3",
+    "express": "latest",
+    "express-jwt": "^3.3.0",
+    "jquery": "^2.2.4",
+    "jsonwebtoken": "^5.7.0",
+    "mongoose": "^4.4.12",
+    "morgan": "^1.7.0",
+    "passport": "^0.3.2",
+    "passport-local-mongoose": "^4.0.0",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-router": "latest"
+  },
+  "devDependencies": {
+    "babel-plugin-react-transform": "^2.0.2",
+    "babel-preset-es2015": "latest",
+    "babelify": "latest",
+    "browser-sync": "latest",
+    "browserify": "latest",
+    "envify": "^3.4.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-clean-css": "^2.0.6",
+    "gulp-less": "latest",
+    "gulp-nodemon": "latest",
+    "gulp-plumber": "latest",
+    "gulp-rename": "^1.2.2",
+    "gulp-rm": "latest",
+    "gulp-sass": "^2.2.0",
+    "gulp-sourcemaps": "latest",
+    "gulp-uglify": "latest",
+    "gulp-util": "latest",
+    "less": "latest",
+    "tap-spec": "latest",
+    "tape": "latest",
+    "uglify-js": "latest",
+    "uglifyify": "^3.0.1",
+    "vinyl-buffer": "latest",
+    "vinyl-source-stream": "latest",
+    "watchify": "latest"
+  },
+  "browserify": {
+    "transform": [
+      "babelify"
+    ]
+  },
+  "babel": {
+    "presets": [
+      "react",
+      "es2015-node5"
+    ],
+    "plugins": [
+      "transform-class-properties",
+      "transform-object-rest-spread"
+    ]
+  }
+}
