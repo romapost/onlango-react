@@ -1,3 +1,74 @@
+$small: 500px;
+$large: 900px;
+
+html {
+   height: 100%;
+}
+body {
+   min-height: 100%;
+}
+
+html, body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+div#app {
+  position: absolute;
+  min-width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #dde;
+}
+
+@mixin respond-to($media) {
+  @if $media == handhelds {
+    @media only screen and (max-width: $small) { @content; }
+  }
+  @else if $media == medium-screens {
+    @media only screen and (min-width: $small + 1) and (max-width: $large - 1) { @content; }
+  }
+  @else if $media == wide-screens {
+    @media only screen and (min-width: $large) { @content; }
+  }
+}
+
+@mixin centerer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.login-box, .register-box {
+  background: #aac;
+  width: 20rem;
+
+  .login-logo, .register-logo {
+    margin: 1rem;
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  .login-box-body, .register-box-body {
+    margin: 1rem;
+    input {
+      margin: 0.2rem;
+    }
+    button {
+      min-width: 10rem;
+      font-size: 1.2rem;
+    }
+  }
+  .social-auth-links {
+    margin: 1rem;
+  }
+  @include respond-to(handhelds) {
+    width: 100%;
+  }
+  @include  centerer;
+}
+
 .text-center {
   text-align: center;
 }

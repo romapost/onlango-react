@@ -32,19 +32,19 @@ export default class Register extends React.Component {
   render() {
     return <div className='register-box'>
       <div className='register-logo'>
-        Register
+        Register to Onlango
       </div>
 
       <div className='register-box-body'>
         <p className='login-box-msg'>Register a new membership</p>
         <form onSubmit={this.submit}>
-          <input type='email' placeholder='Email' ref='email'/>
-          <input type='password' placeholder='Password' ref='password'/>
-          <input type='password' placeholder='Retype password' ref='retype'/>
+          <input type='email' placeholder='Email' ref='email'/><br />
+          <input type='password' placeholder='Password' ref='password'/><br />
+          <input type='password' placeholder='Retype password' ref='retype'/><br />
           <label>
             <input type='checkbox' /> I agree to the <a href='#'>terms</a>
-          </label>
-          <button type='submit' className='btn btn-primary btn-block btn-flat'>Register</button>
+          </label><br />
+          <center><button type='submit' className='btn btn-primary btn-block btn-flat'>Register</button></center>
         </form>
 
         <div className='social-auth-links text-center'>

@@ -38,7 +38,7 @@ const files = {
   scss  : `${dirs.src}/style.scss`,
   index : `${dirs.assets}/index.html`,
 };
-const vendorLibs = ['react', 'react-dom', 'react-router'];
+const vendorLibs = ['react', 'react-dom', 'react-router', 'jquery'];
 
 gulp.task('skel',done => {
   const make = (p, m, f) => new Promise((resolve, reject) => {
@@ -163,7 +163,9 @@ gulp.task('dev', ['dev:vendor', 'dev:js', 'dev:sass'], (done) => {
   bs.init({
     open: false,
     notify: false,
-    proxy: server
+    proxy: server,
+    reloadDebounce: 1500,
+    reloadDelay: 1500
   });
 
   nodemon({
@@ -174,8 +176,7 @@ gulp.task('dev', ['dev:vendor', 'dev:js', 'dev:sass'], (done) => {
   });
 
   gulp.watch([`${dirs.sass}/**/*`, files.scss], ['dev:sass']);
-  gulp.watch([`${dirs.src}/${files.vendor}`], ['dev:vendor']);
-  gulp.watch([`(${dirs.assets}|${dirs.build})/**/*`, `${dirs.build}/(**/*.map|${files.bundle})`], e => {
+  gulp.watch(`${dirs.public}/*/**`, e => {
     bs.reload(path.relative(dirs['public'], e.path).replace(/.*?\//, ''));
   });
 });
