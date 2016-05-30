@@ -24,9 +24,7 @@ const dirs = {
   build     : 'public/build',
   assets    : 'public/assets',
   lib       : 'lib',
-  src       : 'src',
-  sass      : 'src/sass',
-  jsx       : 'src/jsx',
+  src       : 'src'
 };
 const files = {
   server: 'server.js',
@@ -34,11 +32,11 @@ const files = {
   vendor: 'vendor.js',
   style : 'style.css',
   lib   : `${dirs.lib}/index.js`,
-  js    : `${dirs.src}/index.js`,
+  js    : `${dirs.src}/index.jsx`,
   scss  : `${dirs.src}/style.scss`,
-  index : `${dirs.assets}/index.html`,
 };
 const vendorLibs = ['react', 'react-dom', 'react-router', 'jquery'];
+const sassIncludePaths = ['node_modules/'];
 
 gulp.task('skel',done => {
   const make = (p, m, f) => new Promise((resolve, reject) => {
@@ -55,7 +53,7 @@ gulp.task('skel',done => {
   })));
 
   mkdir(['src', 'lib', 'public'])
-    .then(() => mkdir(['jsx', 'sass','build', 'assets']))
+    .then(() => mkdir(['build', 'assets']))
     .then(() => writeFile(['server', 'lib', 'js', 'scss', 'index']))
     .then(() => done());
 });
@@ -142,7 +140,7 @@ gulp.task('build:js', () => {
 gulp.task('dev:sass', () => gulp
   .src(files.scss)
   .pipe(sourcemaps.init())
-  .pipe(sass().on('error', sass.logError))
+  .pipe(sass({includePaths: sassIncludePaths}).on('error', sass.logError))
   .pipe(sourcemaps.write('./', {sourceRoot: dirs.src}))
   .pipe(gulp.dest(dirs.build))
 );
@@ -150,7 +148,7 @@ gulp.task('dev:sass', () => gulp
 gulp.task('build:sass', () => gulp
   .src(files.scss)
   .pipe(sourcemaps.init())
-  .pipe(sass({includePaths: [ 'lib/', 'mod/' ]}).on('error', sass.logError))
+  .pipe(sass({includePaths: sassIncludePaths}).on('error', sass.logError))
   .pipe(autoprefixer())
   .pipe(cleancss())
   .pipe(rename({suffix: '.min'}))
@@ -170,13 +168,13 @@ gulp.task('dev', ['dev:vendor', 'dev:js', 'dev:sass'], (done) => {
 
   nodemon({
     script: files.server,
-    watch: [`${dirs.lib}/**/*`, `${dirs.jsx}/**/*.js*(x)`],
+    watch: [`${dirs.lib}/**/*`, `${dirs.src}/**/*.js*(x)`],
     ext: 'js jsx',
     env: {NODE_PATH: dirs.src}
   });
 
   gulp.watch([`${dirs.sass}/**/*`, files.scss], ['dev:sass']);
-  gulp.watch(`${dirs.public}/*/**`, e => {
+  gulp.watch(`${dirs.public}/**/!(*.map)`, e => {
     bs.reload(path.relative(dirs['public'], e.path).replace(/.*?\//, ''));
   });
 });

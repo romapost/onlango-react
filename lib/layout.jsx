@@ -1,14 +1,16 @@
 import React from 'react';
 
-const min = process.env.NODE_ENV == 'development' ? '' : '.min';
+const min = process.env.NODE_ENV == 'production' ?  '.min' : '';
 const defaults = {
   title: 'App',
   styles: [
-    `style${min}.css`
+    `/style${min}.css`,
+    'https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css',
+    'https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css'
   ],
   scripts: [
-    `vendor${min}.js`,
-    `bundle${min}.js`
+    `/vendor${min}.js`,
+    `/bundle${min}.js`
   ]
 };
 
@@ -22,9 +24,8 @@ export default props => {
   <head>
     <meta charSet='utf-8' />
     <meta httpEquiv='X-UA-Compatible' content='IE=edge' />
-    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport' />
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no shrink-to-fit=no' name='viewport' />
     <title>{get('title')}</title>
-    <base href='/' />
     {get('styles', (e, i) => <link rel='stylesheet' href={e} key={i}/>)}
   </head>
   <body>

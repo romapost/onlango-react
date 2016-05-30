@@ -1,28 +1,42 @@
-import React from 'react';
+//import React from 'react';
 
-import Login from './jsx/login.jsx';
-import Register from './jsx/register.jsx';
-import Dashboard from './jsx/dashboard.jsx';
-import NotFound from './jsx/404.jsx';
+import Login from './containers/login.jsx';
+import Register from './containers/register.jsx';
+import Dashboard from './containers/dashboard.jsx';
+import Profile from './containers/profile.jsx';
+import ProfileView from './components/profileView.jsx';
+import ProfileEdit from './components/profileEdit.jsx';
+import NotFound from './components/404.jsx';
 
-const requireAuth = (nextState, replace) => {
-  if (typeof localStorage == 'undefined' || !localStorage.getItem('accessToken')) replace('login');
+const connectRequireAuth = store => (nextState, replace) => {
+  console.log('checkAuth');
+  if (store) {
+    const state = store.getState();
+    console.log(state);
+    if (!state.user || !state.user.accessToken) replace('/login');
+  }
 };
 
-export default [{
-  path: '/',
-  onEnter() { console.log('enter to /') },
-  indexRoute: {
-    component: Dashboard,
-    onEnter(nextState, replace) { console.log('enter to index'); requireAuth(nextState, replace) }
-  },
-  childRoutes: [
-    {path: 'login', component: Login},
-    {path: 'register', component: Register},
-    {path: 'dashboard', component: Dashboard}
-  ]
-},{
-  path: '*',
-  statusCode: 404,
-  component: NotFound
-}];
+export default store => {
+  const requireAuth = connectRequireAuth(store);
+  return [{
+    path: '/',
+    onEnter() { console.log('enter to /') },
+    indexRoute: {component: Dashboard, onEnter: requireAuth},
+    childRoutes: [
+      {path: 'login', component: Login},
+      {path: 'register', component: Register},
+      {
+        path: 'profile',
+        component: Profile,
+        onEnter: requireAuth,
+        indexRoute: {component: ProfileView},
+        childRoutes: [{path: 'edit', component: ProfileEdit}]
+      },
+    ]
+  }, {
+    path: '*',
+    statusCode: 404,
+    component: NotFound
+  }];
+};
