@@ -4,7 +4,8 @@
     "test": "tape -r babel-register",
     "dev": "NODE_ENV=development gulp dev",
     "build": "NODE_ENV=production gulp build",
-    "start": "NODE_ENV=production node server.js"
+    "start": "NODE_ENV=production node server.js",
+    "start:win": "set NODE_ENV=production node server.js"
   },
   "dependencies": {
     "babel-plugin-transform-class-properties": "latest",
@@ -26,15 +27,15 @@
     "passport": "latest",
     "passport-local-mongoose": "latest",
     "react": "latest",
-    "react-bootstrap": "^0.29.4",
+    "react-bootstrap": "latest",
     "react-dom": "latest",
     "react-dropzone": "latest",
-    "react-redux": "^4.4.5",
+    "react-redux": "latest",
     "react-router": "latest",
-    "react-router-bootstrap": "^0.23.0",
-    "redux": "^3.5.2",
-    "redux-actions": "^0.9.1",
-    "redux-thunk": "^2.1.0",
+    "react-router-bootstrap": "latest",
+    "redux": "latest",
+    "redux-actions": "latest",
+    "redux-thunk": "latest",
     "superagent": "latest"
   },
   "devDependencies": {
@@ -72,7 +73,6 @@
   },
   "babel": {
     "presets": [
-      "react",
       "es2015-node6"
     ],
     "plugins": [

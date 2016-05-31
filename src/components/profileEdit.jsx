@@ -1,43 +1,29 @@
 import React from 'react';
-import {Button, Image} from 'react-bootstrap';
-import {LinkContainer} from 'react-router-bootstrap';
-import Header from './header.jsx';
+import {Image, Grid, Row, Col} from 'react-bootstrap';
 import Dropzone from 'react-dropzone';
-import request from 'superagent';
 
-export default class ProfileEdit extends React.Component {
-  static propTypes = {};
-  static contextTypes = {
-    router: React.PropTypes.object
-  };
-  state = {};
-  onDrop = ([file]) => {
-    request
-      .post('/api/setuserpic')
-      .set('Authorization', `Bearer ${this.state.accessToken}`)
-      .attach('image', file)
-      .end((err, res) => {
-        this.setState({user: {...this.state.user, image: res.header.location}});
-        localStorage.setItem('user', JSON.stringify(this.state.user));
-      });
-  };
-  componentDidMount() {
-    console.log(1);
-    this.setState({
-      accessToken: localStorage.getItem('accessToken'),
-      user: JSON.parse(localStorage.getItem('user') || '{}')
-    });
-  }
-  render() {
-    console.log(1);
-    const userpic = this.state.user ? this.state.user.image : '';
-    return <div>
-      <Header userpic={userpic} />
-      <h1>Welcome</h1>
-      <Dropzone onDrop={this.onDrop} multiple={false}>
-        <Image src={userpic} circle/>
-        <div>Try dropping some files here, or click to select files to upload.</div>
-      </Dropzone>
-    </div>;
-  }
-}
+const ProfileEdit = (props, context) => {
+  const {image, name, surname, country, city, birthdate} = context.userinfo;
+  return <Grid className='profile edit'>
+    <Row>
+      <Col xs={3} className='text-center'>
+        <Dropzone onDrop={([file]) => { context.uploadImage(file, context.accessToken) }} multiple={false}>
+          <Image src={image} circle/>
+          <div>Try dropping some files here, or click to select files to upload.</div>
+        </Dropzone>
+      </Col>
+      <Col>
+        <h2>{[name, surname].join(' ')}</h2>
+        <p>{[country, city, birthdate].join(' ')}</p>
+      </Col>
+    </Row>
+  </Grid>;
+};
+
+ProfileEdit.contextTypes = {
+  userinfo: React.PropTypes.object,
+  uploadImage: React.PropTypes.func,
+  accessToken: React.PropTypes.string
+};
+
+export default ProfileEdit;

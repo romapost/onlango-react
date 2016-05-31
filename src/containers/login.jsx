@@ -39,4 +39,4 @@ class Login extends React.Component {
   }
 }
 
-export default typeof window == 'undefined' ? Login : connect(null, dispatch => bindActionCreators({login}, dispatch))(Login);
+export default connect(null, dispatch => bindActionCreators({login}, dispatch))(Login);

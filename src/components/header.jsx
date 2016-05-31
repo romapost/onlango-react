@@ -8,26 +8,23 @@ const styles = {
   }
 };
 
-export default class Header extends React.Component {
-  logout = e => {
-    e.preventDefault();
-    console.log(this.props.logout);
-    this.props.logout();
-  }
-  render() {
-    return <Navbar>
-      <Navbar.Header>
-        <Navbar.Brand>
-          Onlango-react
-        </Navbar.Brand>
-      </Navbar.Header>
-      <Nav pullRight>
-        <NavDropdown eventKey={1} id='nav-dropdown-profile' title={<Image src={this.props.userpic} circle style={styles.userpic} />}>
-          <LinkContainer to='/profile'><MenuItem>Профиль</MenuItem></LinkContainer>
-          <MenuItem onClick={this.logout}>Выход</MenuItem>
+const Header = (props, context) =>
+  <Navbar>
+    <Navbar.Header>
+      <Navbar.Brand>
+        Onlango-react
+      </Navbar.Brand>
+    </Navbar.Header>
+    <Nav pullRight>
+      <NavDropdown eventKey={1} id='nav-dropdown-profile' title={<Image src={context.userinfo.image} circle style={styles.userpic} />}>
+        <LinkContainer to='/profile'><MenuItem>Профиль</MenuItem></LinkContainer>
+        <MenuItem onClick={context.logout}>Выход</MenuItem>
+      </NavDropdown>
+    </Nav>
+  </Navbar>;
 
-        </NavDropdown>
-      </Nav>
-    </Navbar>;
-  }
-}
+Header.contextTypes = {
+  userinfo: React.PropTypes.object,
+  logout: React.PropTypes.func
+};
+export default Header;

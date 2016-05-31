@@ -1,7 +1,6 @@
 import React from 'react';
 import {Button, Image, Grid, Row, Col} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
-import request from 'superagent';
 
 const styles = {
   editButton: {
@@ -9,33 +8,24 @@ const styles = {
   }
 };
 
-export default class Profile extends React.Component {
-  state = {};
-  componentDidMount() {
-    const accessToken = localStorage.getItem('accessToken');
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    this.setState({accessToken, user});
-    request
-      .get('/api/userinfo')
-      .set('Authorization', `Bearer ${accessToken}`)
-      .end((err, res) => {
-        this.setState({userinfo: res.body});
-      });
-  }
-  render() {
-    return <div id='profile'>
-      {this.state.userinfo && <Grid>
-        <Row>
-          <Col xs={3} className='text-center'>
-            <Image src={this.state.userinfo.image} circle className='center-block' />
-            <LinkContainer to='/profile/edit'><Button bsStyle='info' bsSize='sm' style={styles.editButton}>Редактировать</Button></LinkContainer>
-          </Col>
-          <Col>
-            <h2>{[this.state.userinfo.name, this.state.userinfo.surname].join(' ')}</h2>
-            <p>{[this.state.userinfo.country, this.state.userinfo.city, this.state.userinfo.birthdate].join(' ')}</p>
-          </Col>
-        </Row>
-      </Grid>}
-    </div>;
-  }
-}
+const ProfileView = (props, context) => {
+  const {image, name, surname, country, city, birthdate} = context.userinfo;
+  return <Grid className='profile'>
+    <Row>
+      <Col xs={3} className='text-center'>
+        <Image src={image} circle className='center-block' />
+        <LinkContainer to='/profile/edit'><Button bsStyle='info' bsSize='sm' style={styles.editButton}>Редактировать</Button></LinkContainer>
+      </Col>
+      <Col>
+        <h2>{[name, surname].join(' ')}</h2>
+        <p>{[country, city, birthdate].join(' ')}</p>
+      </Col>
+    </Row>
+  </Grid>;
+};
+
+ProfileView.contextTypes = {
+  userinfo: React.PropTypes.object
+};
+
+export default ProfileView;

@@ -1,28 +1,36 @@
 import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {logout} from '../actions';
+import {logout, uploadImage} from '../actions';
 import Header from '../components/header.jsx';
 
-class Dashboard extends React.Component {
-  static propTypes = {};
-  static contextTypes = {
-    router: React.PropTypes.object
-  };
-  state = {};
-  componentDidMount() {
-    this.setState({
-      accessToken: localStorage.getItem('accessToken'),
-      user: JSON.parse(localStorage.getItem('user') || '{}')
-    });
-  }
-  render() {
-    const userpic = this.state.user ? this.state.user.image : '';
+const Dashboard = React.createClass({
+  childContextTypes: {
+    accessToken: React.PropTypes.string,
+    refreshToken: React.PropTypes.string,
+    userinfo: React.PropTypes.object,
+    logout: React.PropTypes.func,
+    uploadImage: React.PropTypes.func,
+  },
+  getChildContext: function() {
+    const {userinfo, accessToken, refreshToken} = this.props.user;
+    return {
+      userinfo,
+      accessToken,
+      refreshToken,
+      logout: this.props.logout,
+      uploadImage: this.props.uploadImage,
+    };
+  },
+  render: function() {
     return <div>
-      <Header userpic={userpic} logout={this.props.logout}/>
-      <h1>Welcome</h1>
+      <Header t={{x:1}}/>
+      {this.props.children}
     </div>;
   }
-}
+});
 
-export default typeof window == 'undefined' ? Dashboard : connect(null, dispatch => bindActionCreators({logout}, dispatch))(Dashboard);
+const mapStateToProps = state => ({user: state.user});
+const mapDispatchToProps = dispatch => bindActionCreators({logout, uploadImage}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
