@@ -1,5 +1,6 @@
 import {createAction} from 'redux-actions';
-import {LOGIN, REGISTER, LOGOUT, UPLOAD_IMAGE} from '../constants';
+import {LOGIN, REGISTER, LOGOUT, UPLOAD_IMAGE, UPLOAD_USERINFO} from '../constants';
+import {GET_USERINFO} from '../constants';
 import request from 'superagent';
 
 const entranceRequest = (url, type) => {
@@ -28,5 +29,26 @@ export const uploadImage = (file, token) => dispatch => {
     .end((err, res) => {
       if (err) dispatch(action(err));
       else dispatch(action(res.headers.location));
+    });
+};
+export const uploadUserinfo = (data, token) => dispatch => {
+  const action = createAction(UPLOAD_USERINFO);
+  request
+    .post('/api/userinfo')
+    .set('Authorization', `Bearer ${token}`)
+    .send(data)
+    .end((err, res) => {
+      if (err) dispatch(action(err));
+      else dispatch(action(res.body));
+    });
+};
+export const getUserinfo = (token) => dispatch => {
+  const action = createAction(GET_USERINFO);
+  request
+    .get('/api/userinfo')
+    .set('Authorization', `Bearer ${token}`)
+    .end((err, res) => {
+      if (err) dispatch(action(err));
+      else dispatch(action(res.body));
     });
 };

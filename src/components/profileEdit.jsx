@@ -1,38 +1,48 @@
 import React from 'react';
+import {findDOMNode} from 'react-dom';
 import {Image, Row, Col, Form, FormGroup, FormControl, ControlLabel, Button} from 'react-bootstrap';
 import Dropzone from 'react-dropzone';
 
 class DateSelector extends React.Component {
   state = {
     days: Array.apply(null, Array(31)).map((e, i) => i + 1),
-    mounth: 'Январь,Февраль,Март,Апрель,Май,Июнь,Июль,Август,Сентябрь,Ноябрь,Декабрь'.split(','),
-    years: Array.apply(null, Array(80)).map((e, i) => i + 1930),
-    selected: {
-      mounth: 0,
-      day: 0,
-      year: 70
-    }
+    months: 'Январь,Февраль,Март,Апрель,Май,Июнь,Июль,Август,Сентябрь,Ноябрь,Декабрь'.split(','),
+    years: Array.apply(null, Array(100)).map((e, i) => i + 1930),
+    selected: this.props.date ? {
+      day: this.props.date.getDate(),
+      month: this.props.date.getMonth(),
+      year: this.props.date.getFullYear()
+    } : {day: -1, month: -1, year: -1},
+    date: this.props.date
+  };
+  composeDays = (month, year) => {
+    const amount = (new Date(year, month + 1, 0)).getDate();
+    this.setState({days: Array.apply(null, Array(amount)).map((e, i) => i + 1)});
+  };
+  change = e => {
+    const [day = 1, month = 0, year = 2000] = [+this.day.value, +this.month.value, +this.year.value];
+    const selected = {day, month, year};
+    this.composeDays(month, year);
+    this.setState({selected, date: new Date(year, month, day)});
   };
   render() {
+    const d = <option disabled value='-1'>-</option>;
     return <Col sm={6}>
-      <ControlLabel>Дата рождения</ControlLabel>
-      <Row>
-        <Col xs={3}>
-          <FormControl componentClass='select'>
-            {this.state.days.map((e, i) => <option key={i} value={i}>{e}</option>)}
-          </FormControl>
-        </Col>
-        <Col xs={5}>
-          <FormControl componentClass='select' >
-            {this.state.mounth.map((e, i) => <option key={i} value={i}>{e}</option>)}
-          </FormControl>
-        </Col>
-        <Col xs={4}>
-          <FormControl componentClass='select' defaultValue={this.state.selected.year}>
-            {this.state.years.map((e, i) => <option key={i} value={i}>{e}</option>)}
-          </FormControl>
-        </Col>
-      </Row>
+      <FormGroup onChange={this.change}>
+        <ControlLabel>Дата рождения</ControlLabel>
+          <Row>
+            <Col sm={3}><FormControl id='day' componentClass='select' ref={c => this.day = findDOMNode(c)} defaultValue={this.state.selected.day || -1}>
+              {d}{this.state.days.map((e, i) => <option key={i} value={e}>{e}</option>)}
+            </FormControl></Col>
+            <Col sm={5}><FormControl id='mounth' componentClass='select' ref={c => this.month = findDOMNode(c)} defaultValue={this.state.selected.month || -1}>
+              {d}{this.state.months.map((e, i) => <option key={i} value={i}>{e}</option>)}
+            </FormControl></Col>
+            <Col sm={4}><FormControl id='year' componentClass='select' ref={c => this.year = findDOMNode(c)} defaultValue={this.state.selected.year || -1}>
+              {d}{this.state.years.map((e, i) => <option key={i} value={e}>{e}</option>)}
+            </FormControl></Col>
+          </Row>
+      </FormGroup>
+      <input type='text' name='date' value={this.state.date || ''} hidden readOnly />
     </Col>;
   }
 }
@@ -40,7 +50,7 @@ class DateSelector extends React.Component {
 const makeInput = ({id, type, label, placeholder, s}) => props => <Col sm={s||6}>
   <FormGroup controlId={id}>
     <ControlLabel>{label}</ControlLabel>
-    <FormControl type={type || 'text'} placeholder={placeholder || label} defaultValue={props.val}/>
+    <FormControl type={type || 'text'} name={id} placeholder={placeholder || label} defaultValue={props.val}/>
   </FormGroup>
 </Col>;
 
@@ -55,13 +65,14 @@ const inputs = {
   gender: props => <Col sm={6}>
     <FormGroup controlId='gender'>
       <ControlLabel>Пол</ControlLabel>
-      <FormControl componentClass='select'>
+      <FormControl componentClass='select' name='gender' defaultValue='none'>
+        <option disabled value='none'>-</option>
         <option value='male'>Мужской</option>
         <option value='female'>Женский</option>
       </FormControl>
     </FormGroup>
   </Col>,
-  save: props => <Col sm={3}><Button bsStyle='primary' onClick={props.save} block className='save'>Сохранить</Button></Col>,
+  save: props => <Col sm={3}><Button bsStyle='primary' type='submit' form={props.form} block className='save'>Сохранить</Button></Col>,
   birthdate: DateSelector
 };
 
@@ -69,16 +80,26 @@ export default class ProfileEdit extends React.Component{
   static contextTypes = {
     userinfo: React.PropTypes.object,
     uploadImage: React.PropTypes.func,
+    uploadUserinfo: React.PropTypes.func,
     accessToken: React.PropTypes.string
   };
-  onDrop = ([file]) => { this.context.uploadImage(file, this.context.accessToken) };
-  openDropzone = e => { this.refs.dropzone.open() };
-  save = e => { console.log(e) };
+  drop = ([file]) => { this.context.uploadImage(file, this.context.accessToken) };
+  open = e => { this.refs.dropzone.open() };
+  submit = e => {
+    e.preventDefault();
+    const data = Array.from(new FormData(this.form)).filter(e => e[1]).reduce((s, e) => ({...s, [e[0]]: e[1]}), {});
+    this.context.uploadUserinfo(data, this.context.accessToken);
+  };
+  change = e => {  };
   render() {
+    const formId = 'userinfoEdit';
+    const style = {
+      userpic: {margin: '2rem'}
+    };
     const {image, name, surname, country, city, birthdate, email, phone, gender, interests} = this.context.userinfo;
     return <Dropzone
       ref='dropzone'
-      onDrop={this.onDrop}
+      onDrop={this.drop}
       multiple={false}
       disableClick
       className='profile edit navbar-default dropzone container'
@@ -87,11 +108,11 @@ export default class ProfileEdit extends React.Component{
       <div className='overlay' />
       <Row>
       <Col md={10} mdOffset={1}>
-      <Row className='row-eq-height'>
-        <Col sm={3}><Image src={image} circle/></Col>
-        <Col sm={3} className='upload-userpic vertical-center'><Button bsStyle='primary' onClick={this.openDropzone}>Загрузить фото</Button></Col>
+      <Row>
+        <Image src={image} style={style.userpic} circle/>
+        <Button bsStyle='primary' onClick={this.open}>Загрузить фото</Button>
       </Row>
-        <Form>
+        <Form onChange={this.change} onSubmit={this.submit} id={formId} ref={(form) => this.form = findDOMNode(form)}>
             <Row>
               <inputs.name val={name}/>
               <inputs.email val={email} />
@@ -112,7 +133,7 @@ export default class ProfileEdit extends React.Component{
               <inputs.interests val={(interests||[]).join(', ')}/>
             </Row>
             <Row>
-              <inputs.save />
+              <inputs.save form={formId}/>
             </Row>
         </Form>
         </Col>

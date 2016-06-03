@@ -65,21 +65,12 @@ html, body {
   display: flex;
   align-items: center;
 }
-.row-eq-height {
-  display: flex;
-}
 .profile.edit.dropzone  {
-  button {
-    text-transform: uppercase;
-  }
   position: relative;
   padding: 2rem;
   padding-top: 4rem;
-  .row-eq-height {
-    img {
-        display: block;
-        margin: 0 auto;
-    }
+  button {
+    text-transform: uppercase;
   }
   form {
     margin-top: 2rem;

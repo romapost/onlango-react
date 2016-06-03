@@ -1,7 +1,8 @@
 import {combineReducers} from 'redux';
 import {handleActions} from 'redux-actions';
 import {browserHistory} from 'react-router';
-import {LOGIN, REGISTER, LOGOUT, UPLOAD_IMAGE} from '../constants';
+import {LOGIN, REGISTER, LOGOUT, UPLOAD_IMAGE, UPLOAD_USERINFO} from '../constants';
+import {GET_USERINFO} from '../constants';
 
 const saveUsertoStorage = ({userinfo, accessToken, refreshToken}) => {
   localStorage.setItem('userinfo', JSON.stringify(userinfo));
@@ -43,7 +44,21 @@ const user = handleActions({
       localStorage.setItem('userinfo', JSON.stringify(userinfo));
       return {...state, userinfo};
     },
-    fail: (state = {}, action) => ({...state})
+    fail: (state = {}, action) => { console.log(action); return state }
+  },
+  [UPLOAD_USERINFO]: {
+    next: (state = {}, action) => {
+      console.log(action);
+      return {...state, userinfo: {...state.userinfo, ...action.payload}};
+    },
+    fail: (state = {}, action) => { console.log(action); return state }
+  },
+  [GET_USERINFO]: {
+    next: (state = {}, action) => {
+      console.log(action);
+      return {...state, userinfo: {...state.userinfo, ...action.payload}};
+    },
+    fail: (state = {}, action) => { console.log(action); return state }
   }
 }, {});
 
