@@ -1,24 +1,23 @@
 import {createAction} from 'redux-actions';
-import {LOGIN, REGISTER, LOGOUT, UPLOAD_IMAGE, UPLOAD_USERINFO} from '../constants';
+import {LOGIN, LOGOUT, UPLOAD_IMAGE, UPLOAD_USERINFO} from '../constants';
 import {GET_USERINFO} from '../constants';
 import request from 'superagent';
 
-const entranceRequest = (url, type) => {
-  const action = createAction(type);
-
-  return (email, password) => dispatch => {
-    request
-      .post(url)
-      .send({email, password})
-      .end((err, res) => {
-        if (err) dispatch(action(err));
-        else dispatch(action(res.body));
-      });
-  };
-};
-export const login = entranceRequest('/api/login', LOGIN);
-export const register = entranceRequest('/api/register', REGISTER);
 export const logout = () => dispatch => { dispatch(createAction(LOGOUT)()) };
+
+export const login = ({email, password, register}) => dispatch => {
+  console.log(LOGIN, {email, password, register});
+  const action = createAction(LOGIN);
+  const url = register ? '/api/register' : '/api/login';
+
+  return request
+    .post(url)
+    .send({email, password})
+    .end((err, res) => {
+      if (err) dispatch(action(err));
+      else dispatch(action(res.body));
+    });
+};
 
 export const uploadImage = (file, token) => dispatch => {
   const action = createAction(UPLOAD_IMAGE);

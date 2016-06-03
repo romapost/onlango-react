@@ -42,6 +42,7 @@
     "babel-plugin-react-transform": "latest",
     "babel-preset-es2015": "latest",
     "babelify": "latest",
+    "bootstrap-sass": "^3.3.6",
     "browser-sync": "latest",
     "browserify": "latest",
     "browserify-shim": "latest",

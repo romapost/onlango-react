@@ -1,7 +1,7 @@
 import {combineReducers} from 'redux';
 import {handleActions} from 'redux-actions';
 import {browserHistory} from 'react-router';
-import {LOGIN, REGISTER, LOGOUT, UPLOAD_IMAGE, UPLOAD_USERINFO} from '../constants';
+import {LOGIN, LOGOUT, UPLOAD_IMAGE, UPLOAD_USERINFO} from '../constants';
 import {GET_USERINFO} from '../constants';
 
 const saveUsertoStorage = ({userinfo, accessToken, refreshToken}) => {
@@ -15,23 +15,20 @@ const removeUserFromStorage = () => {
   localStorage.removeItem('userinfo');
 };
 
-const entrance = {
-  next: (state = {}, action) => {
-    console.log(action);
-    saveUsertoStorage(action.payload);
-    setTimeout(() => { browserHistory.push('/') }, 100);
-    return {...state, ...action.payload};
-  },
-  throw: (state = {}, action) => {
-    console.log(action);
-    removeUserFromStorage();
-    return {};
-  }
-};
-
 const user = handleActions({
-  [LOGIN]: entrance,
-  [REGISTER]: entrance,
+  [LOGIN]: {
+    next: (state = {}, action) => {
+      console.log(action);
+      saveUsertoStorage(action.payload);
+      setTimeout(() => { browserHistory.push('/') }, 100);
+      return {...state, ...action.payload};
+    },
+    throw: (state = {}, action) => {
+      console.log(action);
+      removeUserFromStorage();
+      return {error: action.payload};
+    }
+  },
   [LOGOUT]: (state = {}, action) => {
       console.log('do logout', action);
       removeUserFromStorage();

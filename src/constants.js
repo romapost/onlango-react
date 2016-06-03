@@ -1,3 +1,3 @@
-export const [LOGIN, REGISTER, LOGOUT] = ['LOGIN', 'REGISTER', 'LOGOUT'];
+export const [LOGIN, LOGOUT] = ['LOGIN', 'LOGOUT'];
 export const [UPLOAD_IMAGE, UPLOAD_USERINFO] = ['UPLOAD_IMAGE', 'UPLOAD_USERINFO'];
 export const [GET_USERINFO] = ['GET_USERINFO'];

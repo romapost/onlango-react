@@ -1,0 +1,50 @@
+html, body {
+  height: 100%;
+  min-height: 100%; }
+
+#app {
+  min-height: 100%;
+  background-color: #cde; }
+
+.entrance .box {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 4px 4px 10px black;
+  padding: 3rem; }
+  .entrance .box .logo {
+    font: bold 2rem serif;
+    padding: 1rem; }
+  .entrance .box .social-auth-links {
+    margin-top: 2rem; }
+
+.vertical-center {
+  min-height: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center; }
+
+.profile.edit.dropzone {
+  position: relative;
+  padding: 2rem;
+  padding-top: 4rem; }
+  .profile.edit.dropzone button {
+    text-transform: uppercase; }
+  .profile.edit.dropzone form {
+    margin-top: 2rem; }
+    .profile.edit.dropzone form button.save {
+      margin-top: 1rem; }
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0; }
+
+.drop-hovered .overlay {
+  border-radius: 5px;
+  border: 3px dashed rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1000; }
+
+/*# sourceMappingURL=style.css.map */
