@@ -3,12 +3,13 @@ import thunk from 'redux-thunk';
 import reducer from './reducers';
 
 const state = {
-  user: typeof localStorage == 'undefined' ? {} : {
+  user: {
     userinfo: JSON.parse(localStorage.getItem('userinfo')),
     accessToken: localStorage.getItem('accessToken'),
     refreshToken: localStorage.getItem('refreshToken')
   }
 };
+
 export default createStore(
   reducer,
   state,

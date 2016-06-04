@@ -16,7 +16,7 @@ const Header = (props, context) =>
       </Navbar.Brand>
     </Navbar.Header>
     <Nav pullRight>
-      <NavDropdown eventKey={1} id='nav-dropdown-profile' title={<Image src={context.userinfo.image} circle style={styles.userpic} />}>
+      <NavDropdown eventKey={1} title={<Image src={context.userinfo.image} circle style={styles.userpic} />}>
         <LinkContainer to='/profile'><MenuItem>Профиль</MenuItem></LinkContainer>
         <MenuItem onClick={context.logout}>Выход</MenuItem>
       </NavDropdown>
@@ -24,7 +24,8 @@ const Header = (props, context) =>
   </Navbar>;
 
 Header.contextTypes = {
-  userinfo: React.PropTypes.object,
-  logout: React.PropTypes.func
+  userinfo: React.PropTypes.object.isRequired,
+  logout: React.PropTypes.func.isRequired
 };
+
 export default Header;

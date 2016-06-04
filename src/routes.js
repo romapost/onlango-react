@@ -10,13 +10,11 @@ import ProfileView from './components/profileView.jsx';
 import ProfileEdit from './components/profileEdit.jsx';
 import NotFound from './components/404.jsx';
 
-const connectRequireAuth = store => store
-  ? (nextState, replace) => {
-      console.log(nextState);
-      const state = store.getState();
-      if (!state.user || !state.user.accessToken) replace('/login');
-    }
-  : () => {};
+const connectRequireAuth = store => (nextState, replace) => {
+  console.log(nextState);
+  const state = store.getState();
+  if (!state.user || !state.user.accessToken) replace('/login');
+};
 
 export default store => {
   const requireAuth = connectRequireAuth(store);
@@ -24,13 +22,12 @@ export default store => {
     {
       path: '/',
       component: App,
-      indexRoute: {component: Dashboard},
+      indexRoute: {component: Dashboard, onEnter: requireAuth},
       childRoutes: [
         {path: 'login', component: Entrance, indexRoute: {component: Login}},
         {component: Entrance, childRoutes: [{path: 'register', component: Register}]},
         {
           component: Dashboard,
-          onEnter: requireAuth,
           indexRoute: Welcome,
           childRoutes: [
             {path: 'profile', component: ProfileView},

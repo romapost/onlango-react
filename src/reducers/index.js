@@ -46,6 +46,7 @@ const user = handleActions({
   [UPLOAD_USERINFO]: {
     next: (state = {}, action) => {
       console.log(action);
+      browserHistory.push('/profile');
       return {...state, userinfo: {...state.userinfo, ...action.payload}};
     },
     fail: (state = {}, action) => { console.log(action); return state }

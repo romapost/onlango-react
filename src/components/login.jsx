@@ -23,16 +23,16 @@ export default class Login extends Component {
     if (this.state.login) this.setState({login: null});
   };
   componentWillReceiveProps(nextProps, nextContext) {
-    if (nextContext.error) this.setState({login: 'error'});
+    if (nextContext.error) this.setState({login: {validationState: 'error'}});
   }
   render() {
     return <div>
       <p className='msg'>Sign in to start your session</p>
       <Form className='login' onSubmit={this.submit} onChange={this.change}>
-        <FormGroup controlId='email' validationState={`${this.state.login}`}>
+        <FormGroup controlId='email' {...this.state.login}>
           <FormControl type='email' name='email' placeholder='Email' ref={this.ref}/>
         </FormGroup>
-        <FormGroup controlId='password' validationState={`${this.state.login}`}>
+        <FormGroup controlId='password' {...this.state.login}>
           <FormControl type='password' name='password' placeholder='Password' ref={this.ref}/>
         </FormGroup>
         <FormGroup><Col><Button type='submit' block>Sign in</Button></Col></FormGroup>

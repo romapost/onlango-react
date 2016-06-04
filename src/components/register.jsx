@@ -21,25 +21,25 @@ export default class Register extends Component {
   };
   change = e => {
     if (this.state.login) this.setState({login: null});
-    if (this.retype.value != this.password.value) this.setState({retype: 'error'});
+    if (this.retype.value != this.password.value) this.setState({retype: {validationState: 'error'}});
     else this.setState({retype: null});
   }
   componentWillReceiveProps(nextProps, nextContext) {
-    if (nextContext.error) this.setState({login: 'error'});
+    if (nextContext.error) this.setState({login: {validationState: 'error'}});
   }
   render() {
     return <div>
       <p className='msg'>Register a new membership</p>
       <Form className='login' onSubmit={this.submit} onChange={this.change}>
-        <FormGroup controlId='email' validationState={this.state.login}>
+        <FormGroup controlId='email' {...this.state.login}>
           <FormControl type='email' name='email' placeholder='Email' ref={this.ref} />
           <FormControl.Feedback />
         </FormGroup>
-        <FormGroup controlId='password' validationState={this.state.login}>
+        <FormGroup controlId='password'{...this.state.login}>
           <FormControl type='password' name='password' placeholder='Password' ref={this.ref} />
           <FormControl.Feedback />
           </FormGroup>
-        <FormGroup controlId='password' validationState={this.state.retype}>
+        <FormGroup controlId='password' {...this.state.retype}>
           <FormControl type='password' name='retype' placeholder='Retype password' ref={this.ref} />
           <FormControl.Feedback />
           </FormGroup>
