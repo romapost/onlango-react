@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import {LOGIN, LOGOUT, UPLOAD_IMAGE, UPLOAD_USERINFO} from '../constants';
-import {GET_USERINFO} from '../constants';
+import {GET_USERINFO, REFRESH_TOKEN} from '../constants';
 import request from 'superagent';
 
 export const logout = () => dispatch => { dispatch(createAction(LOGOUT)()) };
@@ -41,11 +41,21 @@ export const uploadUserinfo = (data, token) => dispatch => {
       else dispatch(action(res.body));
     });
 };
-export const getUserinfo = (token) => dispatch => {
+export const getUserinfo = token => dispatch => {
   const action = createAction(GET_USERINFO);
   request
     .get('/api/userinfo')
     .set('Authorization', `Bearer ${token}`)
+    .end((err, res) => {
+      if (err) dispatch(action(err));
+      else dispatch(action(res.body));
+    });
+};
+export const tryRefreshToken = refreshToken => dispatch => {
+  const action = createAction(REFRESH_TOKEN);
+  request
+    .get('/api/refresh')
+    .query({refreshToken})
     .end((err, res) => {
       if (err) dispatch(action(err));
       else dispatch(action(res.body));

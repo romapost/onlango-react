@@ -228,9 +228,9 @@ gulp.task('dev', ['dev:vendor', 'dev:js', 'dev:sass', 'index'], (done) => {
 
   nodemon({
     script: files.server,
-    watch: [`${dirs.lib}/**/*`, `${dirs.src}/**/*.js*(x)`],
-    ext: 'js jsx',
-    env: {NODE_PATH: dirs.src}
+    watch: `${dirs.lib}/**/*`
+  }).on('start', () => {
+    setTimeout(() => { bs.reload() }, 1500);
   });
 
   gulp.watch([`${dirs.sass}/**/*`, files.scss], ['dev:sass']);

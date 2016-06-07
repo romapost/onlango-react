@@ -7,9 +7,22 @@ const styles = {
     marginTop: '2rem'
   }
 };
+const choose = d => {
+    d %= 100;
+    if (d > 10 && d < 20) return 2;
+    d %= 10;
+    if (d == 1) return 0;
+    if (d > 1 && d < 5) return 1;
+    return 2;
+};
 
 const ProfileView = (props, context) => {
-  const {image, name, surname, country, city, birthdate} = context.userinfo;
+  const {image, name, surname, country, city, year} = context.userinfo;
+  let age;
+  if (year) {
+    age = new Date().getFullYear() - year;
+    age = `${age} ${['год', 'года', 'лет'][choose(age)]}`;
+  }
   return <Grid className='profile'>
     <Row>
       <Col sm={3} className='text-center'>
@@ -18,7 +31,7 @@ const ProfileView = (props, context) => {
       </Col>
       <Col sm={4}>
         <h2>{[name, surname].join(' ')}</h2>
-        <p><Glyphicon glyph='map-marker' /> {[country, city, birthdate].filter(e => e).join(', ')}</p>
+        <p><Glyphicon glyph='map-marker' /> {[country, city, age].filter(e => e).join(', ')}</p>
       </Col>
     </Row>
   </Grid>;

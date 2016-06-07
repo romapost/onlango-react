@@ -25,6 +25,7 @@
     "morgan": "latest",
     "multer": "latest",
     "passport": "latest",
+    "passport-google-oauth20": "^1.0.0",
     "passport-local-mongoose": "latest",
     "react": "latest",
     "react-bootstrap": "latest",

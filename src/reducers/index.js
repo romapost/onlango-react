@@ -2,7 +2,7 @@ import {combineReducers} from 'redux';
 import {handleActions} from 'redux-actions';
 import {browserHistory} from 'react-router';
 import {LOGIN, LOGOUT, UPLOAD_IMAGE, UPLOAD_USERINFO} from '../constants';
-import {GET_USERINFO} from '../constants';
+import {GET_USERINFO, REFRESH_TOKEN} from '../constants';
 
 const saveUsertoStorage = ({userinfo, accessToken, refreshToken}) => {
   localStorage.setItem('userinfo', JSON.stringify(userinfo));
@@ -47,14 +47,23 @@ const user = handleActions({
     next: (state = {}, action) => {
       console.log(action);
       browserHistory.push('/profile');
-      return {...state, userinfo: {...state.userinfo, ...action.payload}};
+      return {...state, userinfo: {...action.payload}};
     },
     fail: (state = {}, action) => { console.log(action); return state }
   },
   [GET_USERINFO]: {
     next: (state = {}, action) => {
       console.log(action);
-      return {...state, userinfo: {...state.userinfo, ...action.payload}};
+      return {...state, userinfo: {...action.payload}};
+    },
+    fail: (state = {}, action) => { console.log(action); return state }
+  },
+  [REFRESH_TOKEN]: {
+    next: (state = {}, action) => {
+      console.log(action);
+      saveUsertoStorage(action.payload);
+      setTimeout(() => { browserHistory.push('/') }, 100);
+      return {...state, ...action.payload};
     },
     fail: (state = {}, action) => { console.log(action); return state }
   }

@@ -11,7 +11,7 @@ import ProfileEdit from './components/profileEdit.jsx';
 import NotFound from './components/404.jsx';
 
 const connectRequireAuth = store => (nextState, replace) => {
-  console.log(nextState);
+  console.log('checkAuth', nextState);
   const state = store.getState();
   if (!state.user || !state.user.accessToken) replace('/login');
 };
@@ -22,13 +22,20 @@ export default store => {
     {
       path: '/',
       component: App,
-      indexRoute: {component: Dashboard, onEnter: requireAuth},
       childRoutes: [
-        {path: 'login', component: Entrance, indexRoute: {component: Login}},
-        {component: Entrance, childRoutes: [{path: 'register', component: Register}]},
+        {
+          path: 'login',
+          component: Entrance,
+          indexRoute: {component: Login}
+        },
+        {
+          component: Entrance,
+          childRoutes: [{path: 'register', component: Register}]
+        },
         {
           component: Dashboard,
-          indexRoute: Welcome,
+          onEnter: requireAuth,
+          indexRoute: {component: Welcome},
           childRoutes: [
             {path: 'profile', component: ProfileView},
             {path: 'profile/edit', component: ProfileEdit}
