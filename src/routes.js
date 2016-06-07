@@ -38,7 +38,12 @@ export default store => {
           indexRoute: {component: Welcome},
           childRoutes: [
             {path: 'profile', component: ProfileView},
-            {path: 'profile/edit', component: ProfileEdit}
+            {path: 'profile/edit', component: ProfileEdit},
+            {path: 'schedule', component: NotFound},
+            {path: 'payment', component: NotFound},
+            {path: 'archive', component: NotFound},
+            {path: 'tests', component: NotFound},
+            {path: 'help', component: NotFound},
           ]
         }
       ],

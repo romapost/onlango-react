@@ -1,10 +1,12 @@
 import React from 'react';
-import {Grid, Row, Col} from 'react-bootstrap';
+import {Grid, Row, Col, Panel} from 'react-bootstrap';
 
-export default props => <Grid>
+export default props => <Grid fluid>
   <Row>
     <Col>
-      <h1>404 Error Page</h1>
+      <Panel>
+        <h1>404 Not Found</h1>
+      </Panel>
     </Col>
   </Row>
 </Grid>;

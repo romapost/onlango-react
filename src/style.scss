@@ -39,10 +39,10 @@ html, body {
   display: flex;
   align-items: center;
 }
+
 .profile.edit.dropzone  {
   position: relative;
   padding: 2rem;
-  padding-top: 4rem;
   button {
     text-transform: uppercase;
   }
@@ -64,7 +64,7 @@ html, body {
 
 .drop-hovered {
   .overlay {
-    border-radius: 5px;
+    border-radius: 25px 50px;
     border: 3px dashed rgba(0, 0, 0, 0.6);
     background-color: rgba(0, 0, 0, 0.3);
     z-index: 1000;
