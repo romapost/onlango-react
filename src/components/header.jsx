@@ -14,7 +14,7 @@ const Header = (props, context) =>
     </Navbar.Header>
     <Navbar.Collapse>
       <Nav pullRight>
-        <NavDropdown eventKey={1} id='headerDropdown' title={<Image src={context.userinfo.image} circle style={{width: '48px'}} />}>
+        <NavDropdown eventKey={1} id='headerDropdown' title={<Image src={context.userinfo && context.userinfo.image} circle style={{width: '48px'}} />}>
           <LinkContainer to='/profile'><MenuItem>Профиль</MenuItem></LinkContainer>
           <MenuItem onClick={context.logout}>Выход</MenuItem>
         </NavDropdown>

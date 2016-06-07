@@ -4,34 +4,32 @@ import {browserHistory} from 'react-router';
 import {LOGIN, LOGOUT, UPLOAD_IMAGE, UPLOAD_USERINFO} from '../constants';
 import {GET_USERINFO, REFRESH_TOKEN} from '../constants';
 
-const saveUsertoStorage = ({userinfo, accessToken, refreshToken}) => {
-  localStorage.setItem('userinfo', JSON.stringify(userinfo));
+const saveTokensToStorage = ({userinfo, accessToken, refreshToken}) => {
   localStorage.setItem('accessToken', accessToken);
   localStorage.setItem('refreshToken', refreshToken);
 };
-const removeUserFromStorage = () => {
+const removeTokensFromStorage = () => {
   localStorage.removeItem('accessToken');
   localStorage.removeItem('refreshToken');
-  localStorage.removeItem('userinfo');
 };
 
 const user = handleActions({
   [LOGIN]: {
     next: (state = {}, action) => {
       console.log(action);
-      saveUsertoStorage(action.payload);
+      saveTokensToStorage(action.payload);
       setTimeout(() => { browserHistory.push('/') }, 100);
       return {...state, ...action.payload};
     },
     throw: (state = {}, action) => {
       console.log(action);
-      removeUserFromStorage();
       return {error: action.payload};
     }
   },
   [LOGOUT]: (state = {}, action) => {
       console.log('do logout', action);
-      removeUserFromStorage();
+      removeTokensFromStorage();
+      localStorage.removeItem('userinfo');
       browserHistory.push('/login');
       return {};
     },
@@ -46,22 +44,32 @@ const user = handleActions({
   [UPLOAD_USERINFO]: {
     next: (state = {}, action) => {
       console.log(action);
+      localStorage.setItem('userinfo', JSON.stringify(action.payload));
       browserHistory.push('/profile');
       return {...state, userinfo: {...action.payload}};
     },
-    fail: (state = {}, action) => { console.log(action); return state }
+    fail: (state = {}, action) => {
+      console.log(action);
+      localStorage.removeItem('userinfo');
+      return state;
+    }
   },
   [GET_USERINFO]: {
     next: (state = {}, action) => {
       console.log(action);
+      localStorage.setItem('userinfo', JSON.stringify(action.payload));
       return {...state, userinfo: {...action.payload}};
     },
-    fail: (state = {}, action) => { console.log(action); return state }
+    fail: (state = {}, action) => {
+      console.log(action);
+      localStorage.removeItem('userinfo');
+      return state;
+    }
   },
   [REFRESH_TOKEN]: {
     next: (state = {}, action) => {
       console.log(action);
-      saveUsertoStorage(action.payload);
+      saveTokensToStorage(action.payload);
       setTimeout(() => { browserHistory.push('/') }, 100);
       return {...state, ...action.payload};
     },

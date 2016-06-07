@@ -17,10 +17,12 @@ const choose = d => {
 };
 
 const ProfileView = (props, context) => {
-  const {image, name, surname, country, city, year} = context.userinfo;
+  const {image, name, surname, country, city, year, month} = context.userinfo;
+  const d = new Date();
   let age;
   if (year) {
-    age = new Date().getFullYear() - year;
+    age = d.getFullYear() - year;
+    if (d.getMonth() - month < 0) age -= 1;
     age = `${age} ${['год', 'года', 'лет'][choose(age)]}`;
   }
   return <Grid className='profile'>
