@@ -89,7 +89,8 @@ const index = (props = {}) => {
     <div id="app"></div>
     ${get('scripts', script, '    ')}
   </body>
-</html>`;
+</html>
+`;
 };
 
 gulp.task('index', () => {

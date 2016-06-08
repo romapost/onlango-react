@@ -24,15 +24,6 @@ export default store => {
       indexRoute: {component: MainPage},
       childRoutes: [
         {
-          path: 'login',
-          component: Entrance,
-          indexRoute: {component: Login}
-        },
-        {
-          component: Entrance,
-          childRoutes: [{path: 'register', component: Register}]
-        },
-        {
           path: 'dashboard',
           component: Dashboard,
           onEnter: requireAuth,
@@ -43,7 +34,12 @@ export default store => {
           childRoutes: [
             {path: 'about', component: NotFound},
             {path: 'contact', component: NotFound},
-            {path: 'privacy', component: NotFound}
+            {path: 'privacy', component: NotFound},
+            {path: 'login', component: Entrance, indexRoute: {component: Login}},
+            {
+              component: Entrance,
+              childRoutes: [{path: 'register', component: Register}]
+            }
           ]
         },
         {

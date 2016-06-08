@@ -3,6 +3,10 @@ import {Grid, Navbar, Nav, NavItem} from 'react-bootstrap';
 import {IndexLinkContainer, LinkContainer} from 'react-router-bootstrap';
 
 export default class MainPage extends Component {
+  componentDidMount() {
+    const h = document.body.offsetHeight;
+    if (this.page.offsetHeight < h) this.page.style.height = h + 'px';
+  }
   render() {
     return <div className='main-page' ref={c => { this.page = c }}>
       <header>
