@@ -18,7 +18,7 @@ const user = handleActions({
     next: (state = {}, action) => {
       console.log(action);
       saveTokensToStorage(action.payload);
-      setTimeout(() => { browserHistory.push('/') }, 100);
+      setTimeout(() => { browserHistory.push('/dashboard') }, 100);
       return {...state, ...action.payload};
     },
     throw: (state = {}, action) => {

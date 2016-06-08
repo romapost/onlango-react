@@ -13,7 +13,6 @@ html, body {
 }
 
 #app {
-  min-height: 100%;
   background-color: #cde;
 }
 
@@ -68,5 +67,25 @@ html, body {
     border: 3px dashed rgba(0, 0, 0, 0.6);
     background-color: rgba(0, 0, 0, 0.3);
     z-index: 1000;
+  }
+}
+
+.main-page {
+  min-height: 100%;
+  position: relative;
+  > .container-fluid {
+    padding-bottom: 5rem;
+  }
+  > footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 1rem;
+    ul {
+      text-align: center;
+      li {
+        display: inline-block;
+      }
+    }
   }
 }

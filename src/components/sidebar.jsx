@@ -4,7 +4,7 @@ import {IndexLinkContainer, LinkContainer} from 'react-router-bootstrap';
 
 export default props =>
   <ListGroup fill>
-    <IndexLinkContainer to='/'><ListGroupItem>Главная</ListGroupItem></IndexLinkContainer>
+    <IndexLinkContainer to='/dashboard'><ListGroupItem>Главная</ListGroupItem></IndexLinkContainer>
     <LinkContainer to='/schedule'><ListGroupItem>Расписание</ListGroupItem></LinkContainer>
     <LinkContainer to='/payment'><ListGroupItem>Оплата</ListGroupItem></LinkContainer>
     <LinkContainer to='/archive'><ListGroupItem>Архив</ListGroupItem></LinkContainer>

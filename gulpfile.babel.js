@@ -76,18 +76,18 @@ const index = (props = {}) => {
   const style = href => `<link rel="stylesheet" href="${href}">`;
   const script = src => `<script src="${src}"></script>`;
 
-  return `<doctype html>
+  return `<!doctype html>
 <html>
   <head>
     <meta charSet="utf-8" />
     <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no shrink-to-fit=no" name="viewport" />
     <title>${get('title')}</title>
-    ${get('styles', style, '      ')}
+    ${get('styles', style, '    ')}
   </head>
   <body>
     <div id="app"></div>
-    ${get('scripts', script, '      ')}
+    ${get('scripts', script, '    ')}
   </body>
 </html>`;
 };
