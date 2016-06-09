@@ -6,7 +6,6 @@ import request from 'superagent';
 export const logout = () => dispatch => { dispatch(createAction(LOGOUT)()) };
 
 export const login = ({email, password, register}) => dispatch => {
-  console.log(LOGIN, {email, password, register});
   const action = createAction(LOGIN);
   const url = register ? '/api/register' : '/api/login';
 
@@ -62,13 +61,9 @@ export const tryRefreshToken = refreshToken => dispatch => {
     });
 };
 export const changePassword = (password, token) => dispatch => {
-  const action = createAction(CHANGE_PASSWORD);
   request
     .post('/api/change_password')
     .set('Authorization', `Bearer ${token}`)
     .send({password})
-    .end((err, res) => {
-      if (err) dispatch(action(err));
-      else dispatch(action(res.body));
-    });
+    .end((err, res) => { dispatch(createAction(CHANGE_PASSWORD)(err ? err : res.body)) });
 };

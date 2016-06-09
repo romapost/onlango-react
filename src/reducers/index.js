@@ -2,7 +2,7 @@ import {combineReducers} from 'redux';
 import {handleActions} from 'redux-actions';
 import {browserHistory} from 'react-router';
 import {LOGIN, LOGOUT, UPLOAD_IMAGE, UPLOAD_USERINFO} from '../constants';
-import {GET_USERINFO, REFRESH_TOKEN} from '../constants';
+import {GET_USERINFO, REFRESH_TOKEN, CHANGE_PASSWORD} from '../constants';
 
 const saveTokensToStorage = ({userinfo, accessToken, refreshToken}) => {
   localStorage.setItem('accessToken', accessToken);
@@ -27,7 +27,7 @@ const user = handleActions({
     }
   },
   [LOGOUT]: (state = {}, action) => {
-      console.log('do logout', action);
+      console.log(action);
       removeTokensFromStorage();
       localStorage.removeItem('userinfo');
       browserHistory.push('/login');
@@ -39,7 +39,7 @@ const user = handleActions({
       localStorage.setItem('userinfo', JSON.stringify(userinfo));
       return {...state, userinfo};
     },
-    fail: (state = {}, action) => { console.log(action); return state }
+    throw: (state = {}, action) => { console.log(action); return state }
   },
   [UPLOAD_USERINFO]: {
     next: (state = {}, action) => {
@@ -48,7 +48,7 @@ const user = handleActions({
       browserHistory.push('/profile');
       return {...state, userinfo: {...action.payload}};
     },
-    fail: (state = {}, action) => {
+    throw: (state = {}, action) => {
       console.log(action);
       localStorage.removeItem('userinfo');
       return state;
@@ -60,7 +60,7 @@ const user = handleActions({
       localStorage.setItem('userinfo', JSON.stringify(action.payload));
       return {...state, userinfo: {...action.payload}};
     },
-    fail: (state = {}, action) => {
+    throw: (state = {}, action) => {
       console.log(action);
       localStorage.removeItem('userinfo');
       return state;
@@ -73,7 +73,18 @@ const user = handleActions({
       setTimeout(() => { browserHistory.push('/') }, 100);
       return {...state, ...action.payload};
     },
-    fail: (state = {}, action) => { console.log(action); return state }
+    throw: (state = {}, action) => { console.log(action); return state }
+  },
+  [CHANGE_PASSWORD]: {
+    next: (state = {}, action) => {
+      console.log(action);
+      browserHistory.push('/profile');
+      return state;
+    },
+    throw: (state = {}, action) => {
+      console.log(action);
+      return {...state, error: action.payload};
+    }
   }
 }, {});
 

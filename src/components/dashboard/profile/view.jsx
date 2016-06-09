@@ -16,7 +16,7 @@ const choose = d => {
     return 2;
 };
 
-const ProfileView = (props, context) => {
+const Profile = (props, context) => {
   const {image, name, surname, country, city, year, month} = context.userinfo;
   const d = new Date();
   let age;
@@ -39,8 +39,8 @@ const ProfileView = (props, context) => {
   </Grid>;
 };
 
-ProfileView.contextTypes = {
+Profile.contextTypes = {
   userinfo: React.PropTypes.object
 };
 
-export default ProfileView;
+export default Profile;

@@ -26,16 +26,17 @@ const dirs = {
   build     : 'public/build',
   assets    : 'public/assets',
   lib       : 'lib',
-  src       : 'src'
+  src       : 'src',
+  sass      : 'src/sass'
 };
 const files = {
   server: 'server.js',
   bundle: 'bundle.js',
   vendor: 'vendor.js',
-  style : 'style.css',
+  style : 'main.css',
   lib   : `${dirs.lib}/index.js`,
   js    : `${dirs.src}/index.jsx`,
-  scss  : `${dirs.src}/style.scss`,
+  scss  : `${dirs.src}/main.scss`,
 };
 const vendorLibs = [
   'react',
@@ -58,7 +59,7 @@ const index = (props = {}) => {
   const defaults = {
     title: 'App',
     styles: [
-      `/style${min}.css`,
+      `/main${min}.css`,
       'https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css',
       'https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css'
     ],

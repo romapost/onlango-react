@@ -1,5 +1,10 @@
 @import 'include-media/dist/_include-media';
-@import 'bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
+@import 'bootstrap-sass/assets/stylesheets/bootstrap/_variables';
+
+@fa-font-path:   'font';
+@import 'font-awesome/scss/font-awesome.scss';
+
+@import 'sass/becomeTeacher';
 
 $breakpoints: (
   'sm': $screen-sm,
@@ -33,7 +38,6 @@ html, body {
 }
 
 .vertical-center {
-  min-height: 100%;
   display: flex;
   align-items: center;
 }

@@ -1,8 +1,14 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {Grid, Navbar, Nav, NavItem} from 'react-bootstrap';
 import {IndexLinkContainer, LinkContainer} from 'react-router-bootstrap';
+import {AccountDropdown} from './lib';
 
-export default class MainPage extends Component {
+const {object} = PropTypes;
+
+class MainPage extends Component {
+  static contextTypes = {
+    userinfo: object
+  };
   componentDidMount() {
     const h = document.body.offsetHeight;
     if (this.page.offsetHeight < h) this.page.style.height = h + 'px';
@@ -18,12 +24,14 @@ export default class MainPage extends Component {
             <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
+            {this.context.userinfo ? <AccountDropdown /> : <Nav pullRight>
+              <LinkContainer to='/login'><NavItem>Login</NavItem></LinkContainer>
+              <LinkContainer to='/register'><NavItem>Register</NavItem></LinkContainer>
+            </Nav>}
             <Nav pullRight={true}>
               <LinkContainer to='/dashboard'><NavItem>Dashboard</NavItem></LinkContainer>
               <LinkContainer to='/about'><NavItem>About</NavItem></LinkContainer>
               <LinkContainer to='/contact'><NavItem>Contact</NavItem></LinkContainer>
-              <LinkContainer to='/login'><NavItem>Login</NavItem></LinkContainer>
-              <LinkContainer to='/register'><NavItem>Register</NavItem></LinkContainer>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
@@ -41,3 +49,5 @@ export default class MainPage extends Component {
     </div>;
   }
 }
+
+export default MainPage;

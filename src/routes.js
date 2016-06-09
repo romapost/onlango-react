@@ -1,16 +1,19 @@
-import App from './containers/app.jsx';
-import Entrance from './containers/entrance.jsx';
-import Login from './components/login.jsx';
-import Register from './components/register.jsx';
-import Dashboard from './containers/dashboard.jsx';
-import Welcome from './components/welcome.jsx';
-import ProfileView from './components/profileView.jsx';
-import ProfileEdit from './components/profileEdit.jsx';
-import MainPage from './components/mainPage.jsx';
-import NotFound from './components/404.jsx';
+import * as components from './components';
+
+const {
+  App,
+  Dashboard,
+  Welcome,
+  MainPage,
+  NotFound,
+  Entrance,
+  Login,
+  Register,
+  Profile,
+  ProfileEdit
+} = components;
 
 const connectRequireAuth = store => (nextState, replace) => {
-  console.log('checkAuth', nextState);
   const state = store.getState();
   if (!state.user || !state.user.accessToken) replace('/login');
 };
@@ -30,23 +33,10 @@ export default store => {
           indexRoute: {component: Welcome}
         },
         {
-          component: MainPage,
-          childRoutes: [
-            {path: 'about', component: NotFound},
-            {path: 'contact', component: NotFound},
-            {path: 'privacy', component: NotFound},
-            {path: 'login', component: Entrance, indexRoute: {component: Login}},
-            {
-              component: Entrance,
-              childRoutes: [{path: 'register', component: Register}]
-            }
-          ]
-        },
-        {
           component: Dashboard,
           onEnter: requireAuth,
           childRoutes: [
-            {path: 'profile', component: ProfileView},
+            {path: 'profile', component: Profile},
             {path: 'profile/edit', component: ProfileEdit},
             {path: 'schedule', component: NotFound},
             {path: 'payment', component: NotFound},
@@ -54,13 +44,19 @@ export default store => {
             {path: 'tests', component: NotFound},
             {path: 'help', component: NotFound},
           ]
+        },
+        {
+          component: MainPage,
+          childRoutes: [
+            {path: 'login', component: Entrance, indexRoute: {component: Login}},
+            {
+              component: Entrance,
+              childRoutes: [{path: 'register', component: Register}]
+            },
+            {path: '/*', component: NotFound},
+          ]
         }
       ],
-    },
-    {
-      path: '*',
-      statusCode: 404,
-      component: NotFound
     }
   ];
 };

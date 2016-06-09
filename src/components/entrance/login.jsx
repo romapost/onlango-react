@@ -5,7 +5,7 @@ import {Col, Form, FormGroup, FormControl, Button} from 'react-bootstrap';
 
 const {func, object} = PropTypes;
 
-export default class Login extends Component {
+class Login extends Component {
   static contextTypes = {login: func, error: object};
   state = {login: null};
   ref = c => {
@@ -41,3 +41,5 @@ export default class Login extends Component {
     </div>;
   }
 }
+
+export default Login;

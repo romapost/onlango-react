@@ -1,0 +1,42 @@
+.become-teacher{
+  .panel-heading {
+    font: bold 1.5rem sans;
+    font-color: #aaa;
+  }
+  table.schedule {
+    margin: auto;
+    input[type=checkbox] {
+      display: none;
+      & + label {
+        position: absolute;
+        top:0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: 0;
+        vertical-align: middle;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        & > div {
+          border-radius: 3px;
+          border: 1px solid #777;
+          width: 1.4rem;
+          height: 1.4rem;
+        }
+      }
+      &:checked + label > div {
+        background-color: #999;
+      }
+    }
+    td {
+      padding: 5px;
+      min-width: 10rem;
+      position: relative;
+      text-align: right;
+    }
+    th {
+      text-align: center;
+    }
+  }
+}

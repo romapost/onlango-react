@@ -1,26 +1,16 @@
 import React, {Component, PropTypes} from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
 import {Grid, Col} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
-import {login, tryRefreshToken} from '../actions';
 
-const {func, object} = PropTypes;
+const {func} = PropTypes;
 
 class Entrance extends Component {
-  static childContextTypes = {
-    login: func,
-    tryRefreshToken: func,
-    error: object
+  static contextTypes = {
+    tryRefreshToken: func
   };
-  getChildContext = () => ({
-    login: this.props.login,
-    tryRefreshToken: this.props.tryRefreshToken,
-    error: this.props.user.error
-  })
   componentWillMount() {
     const {rt} = this.props.location.query;
-    if (rt) this.props.tryRefreshToken(rt);
+    if (rt) this.context.tryRefreshToken(rt);
   }
   render() {
     return <Grid className='vertical-center entrance'>
@@ -39,4 +29,4 @@ class Entrance extends Component {
   }
 }
 
-export default connect(state => ({user: state.user}), dispatch => bindActionCreators({login, tryRefreshToken}, dispatch))(Entrance);
+export default Entrance;

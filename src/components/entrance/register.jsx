@@ -5,7 +5,7 @@ import {Col, Form, FormGroup, FormControl, Checkbox, Button} from 'react-bootstr
 
 const {func, object} = PropTypes;
 
-export default class Register extends Component {
+class Register extends Component {
   static contextTypes = {login: func, error: object};
   state = {login: null, retype: null};
   ref = c => {
@@ -38,18 +38,21 @@ export default class Register extends Component {
         <FormGroup controlId='password'{...this.state.login}>
           <FormControl type='password' name='password' placeholder='Password' ref={this.ref} />
           <FormControl.Feedback />
-          </FormGroup>
+        </FormGroup>
         <FormGroup controlId='password' {...this.state.retype}>
           <FormControl type='password' name='retype' placeholder='Retype password' ref={this.ref} />
           <FormControl.Feedback />
-          </FormGroup>
+        </FormGroup>
         <FormGroup>
           <Checkbox>I agree to the <a href='#'>terms</a></Checkbox>
           </FormGroup>
         <FormGroup>
-          <Col><Button type='submit' block>Sign in</Button></Col></FormGroup>
+          <Col><Button type='submit' block>Sign in</Button></Col>
+        </FormGroup>
       </Form>
       <Link to='login' className='text-center'>I already have a membership</Link>
     </div>;
   }
 }
+
+export default Register;

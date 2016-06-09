@@ -60,7 +60,7 @@ const Input = props => <Col sm={props.size||6}>
 
 const {object, func, string} = PropTypes;
 
-export default class InfoForm extends Component{
+class EditForm extends Component{
   static contextTypes = {
     userinfo: object,
     uploadImage: func,
@@ -136,3 +136,5 @@ export default class InfoForm extends Component{
     </Dropzone>;
   }
 }
+
+export default EditForm;

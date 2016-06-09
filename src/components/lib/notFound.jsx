@@ -1,7 +1,7 @@
 import React from 'react';
 import {Grid, Row, Col, Panel} from 'react-bootstrap';
 
-export default props => <Grid fluid>
+const NotFound = props => <Grid fluid>
   <Row>
     <Col>
       <Panel>
@@ -10,3 +10,5 @@ export default props => <Grid fluid>
     </Col>
   </Row>
 </Grid>;
+
+export default NotFound;
