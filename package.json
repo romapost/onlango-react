@@ -1,4 +1,7 @@
 {
+  "name": "onlango-react",
+  "version": "0.1.0",
+  "engines" : { "node" : ">=6" },
   "scripts": {
     "skel": "gulp skel",
     "test": "tape -r babel-register",
@@ -19,7 +22,6 @@
     "express": "latest",
     "express-jwt": "latest",
     "fs-extra": "latest",
-    "jquery": "latest",
     "jsonwebtoken": "latest",
     "lwip": "latest",
     "mongoose": "latest",
@@ -42,6 +44,7 @@
   },
   "devDependencies": {
     "babel-plugin-react-transform": "latest",
+    "babel-polyfill": "latest",
     "babel-preset-es2015": "latest",
     "babelify": "latest",
     "bootstrap-sass": "latest",

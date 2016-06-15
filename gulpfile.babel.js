@@ -39,6 +39,7 @@ const files = {
   scss  : `${dirs.src}/main.scss`,
 };
 const vendorLibs = [
+  'babel-polyfill',
   'react',
   'react-dom',
   'react-router',
@@ -49,8 +50,7 @@ const vendorLibs = [
   'react-bootstrap',
   'react-router-bootstrap',
   'react-dropzone',
-  'superagent',
-  'jquery'
+  'superagent'
 ];
 const sassIncludePaths = ['node_modules/'];
 
@@ -175,8 +175,7 @@ gulp.task('dev:js', () => {
 
 gulp.task('build:js', () => {
   const b = browserify({
-    entries: [files.js],
-    debug: true
+    entries: [files.js]
   })
   .transform(babelify, {
     plugins: ['transform-class-properties', 'transform-object-rest-spread'],
@@ -188,11 +187,9 @@ gulp.task('build:js', () => {
     .on('error', err => gutil.log('Browserify Error:', err.message))
     .pipe(source(files.bundle))
     .pipe(buffer())
-    .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(uglify())
     .on('error', gutil.log)
     .pipe(rename({suffix: '.min'}))
-    .pipe(sourcemaps.write('./', {sourceRoot: ''}))
     .pipe(gulp.dest(dirs.build));
   }
 );
@@ -207,12 +204,10 @@ gulp.task('dev:sass', () => gulp
 
 gulp.task('build:sass', () => gulp
   .src(files.scss)
-  .pipe(sourcemaps.init())
   .pipe(sass({includePaths: sassIncludePaths}).on('error', sass.logError))
   .pipe(autoprefixer())
   .pipe(cleancss())
   .pipe(rename({suffix: '.min'}))
-  .pipe(sourcemaps.write('./', {sourceRoot: dirs.src}))
   .pipe(gulp.dest(dirs.build))
 );
 

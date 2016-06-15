@@ -13,6 +13,7 @@ export const login = ({email, password, register}) => dispatch => {
     .post(url)
     .send({email, password})
     .end((err, res) => {
+      console.log(err, res);
       if (err) dispatch(action(err));
       else dispatch(action(res.body));
     });
@@ -46,7 +47,7 @@ export const getUserinfo = token => dispatch => {
     .get('/api/userinfo')
     .set('Authorization', `Bearer ${token}`)
     .end((err, res) => {
-      if (err) dispatch(action(err));
+      if (err) dispatch(res.statusCode == 401 ? createAction(LOGOUT)() : action(err));
       else dispatch(action(res.body));
     });
 };
@@ -56,7 +57,7 @@ export const tryRefreshToken = refreshToken => dispatch => {
     .get('/api/refresh')
     .query({refreshToken})
     .end((err, res) => {
-      if (err) dispatch(action(err));
+      if (err) dispatch(res.statusCode == 401 ? createAction(LOGOUT)() : action(err));
       else dispatch(action(res.body));
     });
 };

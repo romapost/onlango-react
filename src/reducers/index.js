@@ -50,7 +50,6 @@ const user = handleActions({
     },
     throw: (state = {}, action) => {
       console.log(action);
-      localStorage.removeItem('userinfo');
       return state;
     }
   },
