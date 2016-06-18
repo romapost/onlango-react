@@ -60,13 +60,13 @@ const Experience = props => <Panel header='1. Мой опыт'>
 </Panel>;
 
 const Schedule = props => <Panel header='2. Расписание'>
-  <Row>
+  <Row className='schedule'>
     <Col>
-      <table className='schedule'>
+      <table>
         <thead ><tr><th />{dayHours.map((e, i) => <th key={i}>{e}<br />{dayHoursLabels[i]}</th>)}</tr></thead>
-        <tbody>{rows.map((rowTitle, r) => <tr key={`r${r}`}>
+        <tbody>{rows.map((rowTitle, r) => <tr key={`${r}`}>
           <td>{rowTitle}</td>{dayHours.map((e, c) => {
-            const i = `r${r}c${c}`;
+            const i = `${r}:${c}`;
             return <td key={i}><input type='checkbox' id={i} /><label htmlFor={i}><div /></label></td>;
           })}
         </tr>)}</tbody>
@@ -107,58 +107,69 @@ const Contacts = props => <Panel header='4. Контактная информа�
   </DoubleCol>
 </Panel>;
 
+const {string} = PropTypes;
+
 class TeacherForm extends Component {
-  static contextTypes = {accessToken: PropTypes.string};
-  state = {
-    data: 'languages,experience,experienceOnline,hoursCanTeach,schedule,aboutSelf,street,street2,zipcode,city,state,country,phone,skype'
-      .split(',')
-      .reduce((s, e) => ({...s, [e]: null}), {}),
-    submitDisabled: true,
+  static contextTypes = {
+    accessToken: string,
+    refreshToken: string
+  };
+  state = {submitDisabled: true};
+  data = {
+    form : 'languages,experience,experienceOnline,hoursCanTeach,schedule,aboutSelf,street,street2,zipcode,city,state,country,phone,skype'
+    .split(',')
+    .reduce((s, e) => ({...s, [e]: null}), {}),
     optional: ['street2', 'schedule'],
     resumeFile: null
   };
   change = e => {
     let {id, value, type} = e.target;
-    if (type == 'file') this.setState({resumeFile: e.target.files[0]}, this.validate);
+    console.log(id, value, type);
+    if (type == 'file') {
+      console.log(e.target.files[0]);
+      this.data.resumeFile = e.target.files[0];
+    }
     else {
       if (type == 'radio') id = 'experienceOnline';
       else if (type == 'checkbox') {
+        const [i, j] = id.split(':');
+        console.log(i, j);
         id = 'schedule';
-        value = 'stub';
+        value = this.data.form[id] || Array(4).fill().map(e => Array(4).fill(0));
+        value[i][j] = +e.target.checked;
+        console.log(value.join(';'));
       }
-      this.setState({data: {...this.state.data, [id]: value}}, this.validate);
+      this.data.form[id] = value;
     }
+    this.validate();
   };
   submit = e => {
     e.preventDefault();
+    const {form, resumeFile} = this.data;
     request
       .post('/api/teacherform')
       .set('Authorization', `Bearer ${this.context.accessToken}`)
-      .send(this.state.data)
+      .send(form)
       .end((err, res) => {
         console.log(err, res);
       });
-    if (this.state.resumeFile) request
+    if (resumeFile) request
       .post('/api/teacherform/resumeFile')
       .set('Authorization', `Bearer ${this.context.accessToken}`)
-      .attach('resumeFile', this.state.resumeFile)
+      .attach('resumeFile', resumeFile)
       .end((err, res) => {
         console.log(err, res);
       });
   };
   validate() {
     const {submitDisabled} = this.state;
+    const {form, optional} = this.data;
     const isCompleted = Object
-      .keys(this.state.data)
-      .filter(e => this.state.optional.indexOf(e) === -1)
-      .every(e => this.state.data[e]);
+      .keys(form)
+      .filter(e => optional.indexOf(e) === -1)
+      .every(e => form[e]);
     if (isCompleted && submitDisabled) this.setState({submitDisabled: false});
     else if (!isCompleted && !submitDisabled) this.setState({submitDisabled: true});
-  }
-  shouldComponentUpdate(nextProps, nextState) {
-    console.log(nextState);
-    if (this.state.submitDisabled !== nextState.submitDisabled) return true;
-    return false;
   }
   render() {
     console.log(this.state);

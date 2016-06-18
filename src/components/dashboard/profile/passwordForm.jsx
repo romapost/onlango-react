@@ -11,7 +11,12 @@ class ChangePasswordForm extends Component {
   }
   state = {submitDisabled: false};
   change = e => {
-    this.setState({[e.target.id]: e.target.value});
+    this[e.target.id] = e.target.value;
+    const {password, retype} = this;
+    const {retypeWarning, submitDisabled} = this.state;
+    const match = (password && (password == retype));
+    this.setRetypeWarning(retypeWarning, !match && retype);
+    this.setSubmitDisabled(submitDisabled, !match || !retype);
   };
   submit = e => {
     e.preventDefault();
@@ -25,13 +30,8 @@ class ChangePasswordForm extends Component {
     if (bool && !submitDisabled) this.setState({submitDisabled: true});
     else if (!bool && submitDisabled) this.setState({submitDisabled: false});
   }
-  componentWillUpdate(nextProps, nextState) {
-    const {password, retype, retypeWarning, submitDisabled} = nextState;
-    const match = (password && (password == retype));
-    this.setRetypeWarning(retypeWarning, !match && retype);
-    this.setSubmitDisabled(submitDisabled, !match || !retype);
-  }
   render() {
+    console.log('render');
     return <Row className='panel' style={{padding: '5rem 2rem'}}>
       <Col sm={4} smOffset={4}>
         <form onChange={this.change} onSubmit={this.submit}>
