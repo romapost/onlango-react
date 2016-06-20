@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {Row, Col, FormGroup, FormControl, ControlLabel, Radio, Panel, HelpBlock, Button} from 'react-bootstrap';
+import {Row, Col, FormGroup, FormControl, ControlLabel, Radio, Panel, HelpBlock, Button, Modal} from 'react-bootstrap';
 import request from 'superagent';
 
 const languages = ['English', 'German', 'Italian', 'Spanish', 'French'];
@@ -19,7 +19,7 @@ const Experience = props => <Panel header='1. Мой опыт'>
           <ControlLabel>Язык который хочу предоподовать</ControlLabel>
         </Col>
         <Col sm={5}>
-          <FormControl componentClass='select' multiple>
+          <FormControl componentClass='select' multiple value={props.languages}>
             {languages.map((e, i) => <option value={e} key={i}>{e}</option>)}
           </FormControl>
         </Col>
@@ -30,7 +30,7 @@ const Experience = props => <Panel header='1. Мой опыт'>
         <ControlLabel>Стаж предоподавания</ControlLabel>
       </Col>
       <Col sm={5}>
-        <FormControl componentClass='select'>
+        <FormControl componentClass='select' value={props.experience}>
           <option value=''> - </option>
           {ages.map((e, i) => <option value={i} key={i}>{e}</option>)}
         </FormControl>
@@ -41,8 +41,12 @@ const Experience = props => <Panel header='1. Мой опыт'>
     <FormGroup controlId='experienceOnline'>
     <Row>
       <Col sm={7}><ControlLabel>Есть ли опыт преподавания онлайн?</ControlLabel></Col>
-      <Col sm={2}><Radio inline name='experienceOnline' value='yes'>Есть</Radio></Col>
-      <Col sm={2}><Radio inline name='experienceOnline' value='no'>Нет</Radio></Col>
+      <Col sm={2}>
+        <Radio inline name='experienceOnline' value='yes' checked={props.experienceOnline == 'yes'}>Есть</Radio>
+      </Col>
+      <Col sm={2}>
+        <Radio inline name='experienceOnline' value='no' checked={props.experienceOnline == 'no'}>Нет</Radio>
+      </Col>
       </Row>
     </FormGroup>
     <FormGroup controlId='hoursCanTeach'>
@@ -50,7 +54,7 @@ const Experience = props => <Panel header='1. Мой опыт'>
         <ControlLabel>Сколько часов в неделю можете преподавать?</ControlLabel>
       </Col>
       <Col sm={5}>
-        <FormControl componentClass='select'>
+        <FormControl componentClass='select' value={props.hoursCanTeach}>
           <option value=''> - </option>
           {weekHours.map((e, i) => <option value={i} key={i}>{e}</option>)}
         </FormControl>
@@ -67,7 +71,10 @@ const Schedule = props => <Panel header='2. Расписание'>
         <tbody>{rows.map((rowTitle, r) => <tr key={`${r}`}>
           <td>{rowTitle}</td>{dayHours.map((e, c) => {
             const i = `${r}:${c}`;
-            return <td key={i}><input type='checkbox' id={i} /><label htmlFor={i}><div /></label></td>;
+            return <td key={i}>
+              <input type='checkbox' id={i} checked={props.schedule[r][c]}/>
+              <label htmlFor={i}><div /></label>
+            </td>;
           })}
         </tr>)}</tbody>
       </table>
@@ -78,7 +85,7 @@ const Schedule = props => <Panel header='2. Расписание'>
 const About = props => <Panel header='3. О себе'>
   <FormGroup controlId='aboutSelf'>
     <ControlLabel>Расскажите о себе</ControlLabel>
-    <FormControl componentClass='textarea' />
+    <FormControl componentClass='textarea' value={props.aboutSelf} />
   </FormGroup>
   <FormGroup controlId='resumeFile'>
     <ControlLabel>Прикрепить резюме</ControlLabel>
@@ -90,20 +97,36 @@ const About = props => <Panel header='3. О себе'>
 const Contacts = props => <Panel header='4. Контактная информация'>
   <FormGroup controlId='address'>
     <ControlLabel>Адрес</ControlLabel>
-    <FormGroup controlId='street'><FormControl type='text' placeholder='Street address 1'/></FormGroup>
-    <FormGroup controlId='street2'><FormControl type='text' placeholder='Street address 2 (optional)'/></FormGroup>
+    <FormGroup controlId='street'>
+      <FormControl type='text' placeholder='Street address 1' value={props.street} />
+    </FormGroup>
+    <FormGroup controlId='street2'>
+      <FormControl type='text' placeholder='Street address 2 (optional)' value={props.street2} />
+    </FormGroup>
   </FormGroup>
   <DoubleCol>
-    <FormGroup controlId='zipcode'><FormControl type='text' placeholder='Zip code'/></FormGroup>
-    <FormGroup controlId='city'><FormControl type='text' placeholder='City'/></FormGroup>
+    <FormGroup controlId='zipcode'>
+      <FormControl type='text' placeholder='Zip code' value={props.zipcode} />
+    </FormGroup>
+    <FormGroup controlId='city'>
+      <FormControl type='text' placeholder='City' value={props.city} />
+    </FormGroup>
   </DoubleCol>
   <DoubleCol>
-    <FormGroup controlId='state'><FormControl type='text' placeholder='State'/></FormGroup>
-    <FormGroup controlId='country'><FormControl type='text' placeholder='Coutry'/></FormGroup>
+    <FormGroup controlId='state'>
+      <FormControl type='text' placeholder='State' value={props.state} />
+    </FormGroup>
+    <FormGroup controlId='country'>
+      <FormControl type='text' placeholder='Coutry' value={props.country} />
+    </FormGroup>
   </DoubleCol>
   <DoubleCol>
-    <FormGroup controlId='phone'><FormControl type='tel' placeholder='Phone'/></FormGroup>
-    <FormGroup controlId='skype'><FormControl type='text' placeholder='Skype'/></FormGroup>
+    <FormGroup controlId='phone'>
+      <FormControl type='tel' placeholder='Phone' value={props.phone} />
+    </FormGroup>
+    <FormGroup controlId='skype'>
+      <FormControl type='text' placeholder='Skype' value={props.skype} />
+    </FormGroup>
   </DoubleCol>
 </Panel>;
 
@@ -114,20 +137,23 @@ class TeacherForm extends Component {
     accessToken: string,
     refreshToken: string
   };
-  state = {submitDisabled: true};
-  data = {
-    form : 'languages,experience,experienceOnline,hoursCanTeach,schedule,aboutSelf,street,street2,zipcode,city,state,country,phone,skype'
+  state = {
+    submitDisabled: true,
+    showModal: false,
+    form : 'experience,experienceOnline,hoursCanTeach,aboutSelf,street,street2,zipcode,city,state,country,phone,skype'
     .split(',')
-    .reduce((s, e) => ({...s, [e]: null}), {}),
+    .reduce((s, e) => ({...s, [e]: ''}), {
+      languages: [],
+      schedule: Array(4).fill().map(e => Array(4).fill(0))
+    }),
     optional: ['street2', 'schedule'],
     resumeFile: null
   };
   change = e => {
     let {id, value, type} = e.target;
-    console.log(id, value, type);
     if (type == 'file') {
       console.log(e.target.files[0]);
-      this.data.resumeFile = e.target.files[0];
+      this.setState({resumeFile: e.target.files[0]});
     }
     else {
       if (type == 'radio') id = 'experienceOnline';
@@ -135,17 +161,20 @@ class TeacherForm extends Component {
         const [i, j] = id.split(':');
         console.log(i, j);
         id = 'schedule';
-        value = this.data.form[id] || Array(4).fill().map(e => Array(4).fill(0));
+        value = this.state.form[id];
         value[i][j] = +e.target.checked;
         console.log(value.join(';'));
+      } else if (id == 'languages') {
+        value = Array.from(e.target.selectedOptions).map(e => e.value);
       }
-      this.data.form[id] = value;
+      console.log(id, value, type);
+      this.setState({form:{ ...this.state.form, [id]: value}}, this.validate);
     }
-    this.validate();
   };
   submit = e => {
     e.preventDefault();
-    const {form, resumeFile} = this.data;
+    this.openModal();
+    const {form, resumeFile} = this.state;
     request
       .post('/api/teacherform')
       .set('Authorization', `Bearer ${this.context.accessToken}`)
@@ -162,8 +191,7 @@ class TeacherForm extends Component {
       });
   };
   validate() {
-    const {submitDisabled} = this.state;
-    const {form, optional} = this.data;
+    const {submitDisabled, form, optional} = this.state;
     const isCompleted = Object
       .keys(form)
       .filter(e => optional.indexOf(e) === -1)
@@ -171,15 +199,31 @@ class TeacherForm extends Component {
     if (isCompleted && submitDisabled) this.setState({submitDisabled: false});
     else if (!isCompleted && !submitDisabled) this.setState({submitDisabled: true});
   }
+  openModal = () => { this.setState({showModal: true}) }
+  closeModal = () => { this.setState({showModal: false}) };
+  componentDidMount() {
+    console.log('dm');
+    request
+      .get('/api/teacherform')
+      .set('Authorization', `Bearer ${this.context.accessToken}`)
+      .end((err, res) => {
+        console.log(err, res);
+        this.setState({form: {...this.state.form, ...res.body}}, this.validate);
+      });
+  }
   render() {
-    console.log(this.state);
-    return <Panel className='become-teacher'>
+    console.log(this.state, this.state.form);
+    return <Panel className='become-teacher modal-container'>
       <form onChange={this.change} onSubmit={this.submit}>
-        <Experience />
-        <Schedule />
-        <About />
-        <Contacts />
+        <Experience {...this.state.form} />
+        <Schedule {...this.state.form} />
+        <About {...this.state.form} />
+        <Contacts {...this.state.form} />
         <Row><Col sm={4} smOffset={4}><Button type='submit' block bsStyle='primary' disabled={this.state.submitDisabled}>Отправить</Button></Col></Row>
+        <Modal show={this.state.showModal} onHide={this.closeModal}>
+          <Modal.Body><h4>Спасибо! Ваше заявка отправлена!</h4></Modal.Body>
+          <Modal.Footer><Button onClick={this.closeModal}>Закрыть</Button></Modal.Footer>
+        </Modal>
       </form>
     </Panel>;
   }
