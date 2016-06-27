@@ -1,7 +1,9 @@
 {
   "name": "onlango-react",
   "version": "0.1.0",
-  "engines" : { "node" : ">=6" },
+  "engines": {
+    "node": ">=6"
+  },
   "scripts": {
     "skel": "gulp skel",
     "test": "tape -r babel-register",

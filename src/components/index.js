@@ -3,3 +3,4 @@ export {default as MainPage} from './mainPage.jsx';
 export {NotFound, Welcome} from './lib';
 export {default as Entrance, Login, Register} from './entrance';
 export {default as Dashboard, Profile, ProfileEdit} from './dashboard';
+export {default as Schedule} from './schedule.jsx';

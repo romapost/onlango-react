@@ -5,6 +5,7 @@ const {
   Dashboard,
   Welcome,
   MainPage,
+  Schedule,
   NotFound,
   Entrance,
   Login,
@@ -38,7 +39,7 @@ export default store => {
           childRoutes: [
             {path: 'profile', component: Profile},
             {path: 'profile/edit', component: ProfileEdit},
-            {path: 'schedule', component: NotFound},
+            {path: 'schedule', component: Schedule},
             {path: 'payment', component: NotFound},
             {path: 'archive', component: NotFound},
             {path: 'tests', component: NotFound},

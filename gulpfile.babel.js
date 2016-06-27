@@ -61,11 +61,13 @@ const index = (props = {}) => {
     styles: [
       `/main${min}.css`,
       'https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css',
-      'https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css'
+      'https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css',
     ],
     scripts: [
+      'http://yui.yahooapis.com/3.18.1/build/yui/yui-min.js',
+      'http://cdn.alloyui.com/3.0.1/aui/aui-min.js',
       `/vendor${min}.js`,
-      `/bundle${min}.js`
+      `/bundle${min}.js`,
     ]
   };
 
