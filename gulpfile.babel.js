@@ -61,11 +61,11 @@ const index = (props = {}) => {
     styles: [
       `/main${min}.css`,
       'https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css',
-      'https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css'
+      'https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css',
     ],
     scripts: [
       `/vendor${min}.js`,
-      `/bundle${min}.js`
+      `/bundle${min}.js`,
     ]
   };
 
