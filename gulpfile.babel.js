@@ -50,7 +50,9 @@ const vendorLibs = [
   'react-bootstrap',
   'react-router-bootstrap',
   'react-dropzone',
-  'superagent'
+  'superagent',
+  'react-big-calendar',
+  'moment',
 ];
 const sassIncludePaths = ['node_modules/', 'src/sass'];
 
