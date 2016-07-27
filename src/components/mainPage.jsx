@@ -9,10 +9,6 @@ class MainPage extends Component {
   static contextTypes = {
     userinfo: object
   };
-  componentDidMount() {
-    const h = document.body.offsetHeight;
-    if (this.page.offsetHeight < h) this.page.style.height = h + 'px';
-  }
   render() {
     return <div className='main-page' ref={c => { this.page = c }}>
       <header>
@@ -29,6 +25,7 @@ class MainPage extends Component {
               <LinkContainer to='/register'><NavItem>Register</NavItem></LinkContainer>
             </Nav>}
             <Nav pullRight={true}>
+              <LinkContainer to='/teacherslist'><NavItem>Teachers</NavItem></LinkContainer>
               <LinkContainer to='/dashboard'><NavItem>Dashboard</NavItem></LinkContainer>
               <LinkContainer to='/about'><NavItem>About</NavItem></LinkContainer>
               <LinkContainer to='/contact'><NavItem>Contact</NavItem></LinkContainer>

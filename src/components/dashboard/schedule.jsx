@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {Grid, Row, Col, Panel, Button} from 'react-bootstrap';
 import BigCalendar from 'react-big-calendar';
-import moment from 'moment';
+import moment from 'moment/min/moment-with-locales.js';
 
-BigCalendar.momentLocalizer(moment);
+BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
 export default class Schedule extends Component {
   state = {events: []};
@@ -17,6 +17,7 @@ export default class Schedule extends Component {
           <Panel style={{minHeight: '30em'}}>
             <BigCalendar
               selectable
+              culture='ru'
               events={this.state.events}
               defaultView='month'
               defaultDate={new Date(2015, 3, 1)}

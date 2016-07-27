@@ -117,7 +117,7 @@ const Contacts = props => <Panel header='4. Контактная информа�
       <FormControl type='text' placeholder='State' value={props.state} />
     </FormGroup>
     <FormGroup controlId='country'>
-      <FormControl type='text' placeholder='Coutry' value={props.country} />
+      <FormControl type='text' placeholder='Country' value={props.country} />
     </FormGroup>
   </DoubleCol>
   <DoubleCol>

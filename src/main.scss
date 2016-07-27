@@ -1,11 +1,12 @@
 @import 'include-media/dist/_include-media';
 @import 'bootstrap-sass/assets/stylesheets/bootstrap/_variables';
 
-// @fa-font-path:   'font';
-// @import 'font-awesome/scss/font-awesome.scss';
+@fa-font-path: 'font';
+@import 'font-awesome/scss/font-awesome.scss';
 
 @import 'becomeTeacher';
 @import 'react-big-calendar';
+@import 'teacherinfo';
 
 $breakpoints: (
   'sm': $screen-sm,

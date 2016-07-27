@@ -1,8 +1,11 @@
+import App from './containers/app.jsx';
+import Dashboard from './components/dashboard/dashboard.jsx';
+
+import TeacherInfo from './components/teacherInfo.jsx';
+
 import * as components from './components';
 
 const {
-  App,
-  Dashboard,
   Welcome,
   MainPage,
   Schedule,
@@ -41,7 +44,6 @@ export default store => {
             {path: 'profile', component: Profile},
             {path: 'profile/edit', component: ProfileEdit},
             {path: 'schedule', component: Schedule},
-            {path: 'teacherslist', component: TeachersList},
             {path: 'payment', component: NotFound},
             {path: 'archive', component: NotFound},
             {path: 'tests', component: NotFound},
@@ -52,6 +54,8 @@ export default store => {
           component: MainPage,
           childRoutes: [
             {path: 'login', component: Entrance, indexRoute: {component: Login}},
+            {path: 'teacherslist', component: TeachersList},
+            {path: 'teacherinfo/:teacherId', component: TeacherInfo},
             {
               component: Entrance,
               childRoutes: [{path: 'register', component: Register}]

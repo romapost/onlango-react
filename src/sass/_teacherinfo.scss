@@ -1,0 +1,18 @@
+.teacherinfo {
+  p .title {
+    display: inline-block;
+    min-width: 12rem;
+    font-size: 1.1em;
+    color: #357;
+    margin-right: 2em;
+  }
+  button.center-block {
+    margin-top: 1rem;
+  }
+}
+
+.teacherlist {
+  .teacherblock {
+    text-align: center;
+  }
+}
