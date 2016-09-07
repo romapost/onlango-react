@@ -1,13 +1,21 @@
-import 'babel-polyfill';
-import React from 'react';
 import {render} from 'react-dom';
-import {Provider } from 'react-redux';
 import {Router, browserHistory} from 'react-router';
+import {Provider} from 'react-redux';
+import {createStore, applyMiddleware, compose} from 'redux';
+import reducer from 'reducers';
+import routes from 'routes';
+import socketMiddleware from './socketMiddleware';
 
-import store from './store';
-import routes from './routes';
+import 'main.scss';
 
-render(
-  <Provider store={store}><Router routes={routes(store)} history={browserHistory} /></Provider>,
-  document.querySelector('#app')
-);
+const store = createStore(reducer, compose(
+  applyMiddleware(socketMiddleware),
+  window.devToolsExtension && window.devToolsExtension()
+));
+
+document.addEventListener('DOMContentLoaded', () => {
+  render(
+    <Provider store={store}><Router routes={routes} history={browserHistory} /></Provider>,
+    document.querySelector('#root')
+  );
+});
