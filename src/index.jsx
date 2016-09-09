@@ -8,10 +8,10 @@ import socketMiddleware from './socketMiddleware';
 
 import 'main.scss';
 
-const store = createStore(reducer, compose(
-  applyMiddleware(socketMiddleware),
-  window.devToolsExtension && window.devToolsExtension()
-));
+const enhancers = [applyMiddleware(socketMiddleware)];
+if (window.devToolsExtension) enhancers.push(window.devToolsExtension());
+
+const store = createStore(reducer, compose(...enhancers));
 
 document.addEventListener('DOMContentLoaded', () => {
   render(
