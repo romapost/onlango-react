@@ -6,7 +6,9 @@ export default handleActions({
     return {...state, [name]: socket};
   },
   [disconnectSocket]: (state, {payload: name}) => {
-    delete state[name];
-    return {...state};
+    if (name) {
+      delete state[name];
+      return {...state};
+    } else return {};
   }
 }, {});

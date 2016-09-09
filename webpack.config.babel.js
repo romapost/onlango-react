@@ -3,49 +3,10 @@ import webpack from 'webpack';
 import {dev} from './config/common';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+
 const minsuffix = dev ? '' : '.min';
 
-const vendor = [
-  'babel-polyfill',
-  'moment',
-  'react-big-calendar',
-  'react-bootstrap',
-  'react-dom',
-  'react-dropzone',
-  'react-redux',
-  'react-router-bootstrap',
-  'react-router',
-  'react',
-  'redux-actions',
-  'redux-thunk',
-  'redux',
-  'socket.io-client',
-];
-const app = ['./src/index.jsx'];
-
-const plugins = [
-  new webpack.optimize.CommonsChunkPlugin('vendor', `vendor${minsuffix}.js`),
-  new webpack.ProvidePlugin({'React': 'react'}),
-  new webpack.SourceMapDevToolPlugin({
-    test: /bundle/,
-    filename: '[file].map'
-  }),
-  new HtmlWebpackPlugin({
-    title: 'Chat App',
-    template: 'src/index.pug',
-    appMountId: 'root'
-  }),
-  new ExtractTextPlugin('main.css')
-];
-
-if (!dev) {
-  plugins.push(
-    new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}}),
-    new webpack.DefinePlugin({'process.env': {'NODE_ENV': JSON.stringify('production')}})
-  );
-}
-
-module.exports = {
+const config = {
   resolve: {
     root: [
       path.resolve(__dirname),
@@ -55,11 +16,26 @@ module.exports = {
     extensions: ['', '.js', '.jsx']
   },
   entry: {
-    app,
-    vendor
+    app: ['./src/index.jsx'],
+    vendor: [
+      'babel-polyfill',
+      'moment',
+      'react-big-calendar',
+      'react-bootstrap',
+      'react-dom',
+      'react-dropzone',
+      'react-redux',
+      'react-router-bootstrap',
+      'react-router',
+      'react',
+      'redux-actions',
+      'redux-thunk',
+      'redux',
+      'socket.io-client',
+    ]
   },
   output: {
-    path: './public',
+    path: path.resolve(__dirname, 'public'),
     publicPath: '/',
     filename: `bundle${minsuffix}.js`
   },
@@ -70,7 +46,7 @@ module.exports = {
         loader: 'babel',
         exclude: /node_modules/,
         query: {
-          presets: ['es2015', 'react'],
+          presets: [['es2015', {'loose': true}], 'react'],
           plugins: ['transform-class-properties', 'transform-object-rest-spread']
         }
       },
@@ -94,5 +70,42 @@ module.exports = {
       path.resolve(__dirname, 'src/sass/')
     ]
   },
-  plugins
+  devServer: {
+    contentBase: 'public',
+    inline: true,
+    hot: true,
+    historyApiFallback: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        ws: true
+      }
+    }
+  },
+  plugins: [
+    new webpack.optimize.CommonsChunkPlugin('vendor', `vendor${minsuffix}.js`),
+    new webpack.ProvidePlugin({'React': 'react'}),
+    new webpack.SourceMapDevToolPlugin({
+      test: /bundle/,
+      filename: '[file].map'
+    }),
+    new HtmlWebpackPlugin({
+      title: 'Chat App',
+      template: 'src/index.pug',
+      appMountId: 'root'
+    }),
+    new ExtractTextPlugin('main.css')
+  ]
 };
+
+if (dev) {
+  config.entry.app.unshift('webpack-dev-server/client?http://localhost:8080/', 'webpack/hot/dev-server');
+  config.plugins.push(new webpack.HotModuleReplacementPlugin());
+} else {
+  config.plugins.push(
+    new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}}),
+    new webpack.DefinePlugin({'process.env': {'NODE_ENV': JSON.stringify('production')}})
+  );
+}
+
+export default config;

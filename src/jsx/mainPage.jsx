@@ -17,7 +17,7 @@ class MainPage extends Component {
             <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
-            {this.props.user && this.props.accessToken ? <AccountDropdown /> : <Nav pullRight>
+            {this.props.accessToken ? <AccountDropdown /> : <Nav pullRight>
               <LinkContainer to='/login'><NavItem>Login</NavItem></LinkContainer>
               <LinkContainer to='/register'><NavItem>Register</NavItem></LinkContainer>
             </Nav>}
@@ -44,4 +44,4 @@ class MainPage extends Component {
   }
 }
 
-export default connect(({authorization: {accessToken}, user}) => ({accessToken, user}), {logout})(MainPage);
+export default connect(({authorization: {accessToken}}) => ({accessToken}), {logout})(MainPage);

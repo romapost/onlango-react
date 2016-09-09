@@ -4,7 +4,7 @@ import {getTeachersList, getTeacherInfo, filterTeachers, setTeachersListPage} fr
 
 const list = handleActions({
   [getTeachersList]: (state, {payload}) => [...payload],
-  [getTeacherInfo]: (state, {payload}) => state.filter(e => e.id == payload.id).concat(payload)
+  [getTeacherInfo]: (state, {payload}) => state.filter(e => e.id !== payload.id).concat(payload)
 }, []);
 
 const page = handleAction(setTeachersListPage, (state, {payload}) => payload, 1);

@@ -14,8 +14,7 @@ class TeacherInfo extends Component {
     if (!this.props.commonSocket && nextProps.commonSocket) this.props.getTeacherInfo(this.props.params.id);
   }
   render() {
-    console.log(this.props.teacherInfo)
-    const {experience, languages, interests, aboutSelf, country, image, name} = this.props.teacherInfo || {};
+    const {experience, languages = [], interests, aboutSelf, country, image, name} = this.props.teacherInfo || {};
     return <Row>
       <Col sm={10} smOffset={1}>
         <Panel className='teacher-info'>
@@ -25,13 +24,13 @@ class TeacherInfo extends Component {
               <Image src={image} rounded className='center-block'/>
               <Button className='center-block'>Записаться на урок</Button>
             </Col>
-            <Col sm={3}>
+            <Col sm={4}>
               <p><span className='title'>Стаж преподавания </span>{moment.duration(experience, 'y').humanize()}</p>
               <p><span className='title'>Страна </span>{country}</p>
-              <p><span className='title'>Преподаёт </span>{languages}</p>
+              <p><span className='title'>Преподаёт </span>{languages.join(', ')}</p>
               <p><span className='title'>Интересы </span>{interests}</p>
             </Col>
-            <Col sm={6}>{aboutSelf}</Col>
+            <Col sm={5}>{aboutSelf}</Col>
           </Row>
         </Panel>
       </Col>

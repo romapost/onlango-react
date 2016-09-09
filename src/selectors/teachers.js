@@ -11,10 +11,9 @@ export const filteredTeachersList = createSelector(
       const filterNames = Object.keys(filter);
       for (const key of filterNames) {
         if (!(key in teacher)) return false;
-        else if (
-          Array.isArray(teacher[key]) &&
-          teacher[key].indexOf(filter[key]) == -1
-        ) return false;
+        else if (Array.isArray(teacher[key])) {
+          if (teacher[key].indexOf(filter[key]) == -1) return false;
+        }
         else if (teacher[key] != filter[key]) return false;
         else return true;
       }

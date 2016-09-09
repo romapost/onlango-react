@@ -1,6 +1,5 @@
 import {connectSocket, disconnectSocket} from 'actions';
 import io from 'socket.io-client';
-import {host} from 'config/client';
 import {login} from 'actions';
 
 const socketPath = '/api';
@@ -24,8 +23,8 @@ export default ({dispatch, getState}) => next => action => {
   console.log(action);
   const {type, meta, payload} = action;
   if (type == connectSocket) {
-    console.log(`connecting socket ${host}/${payload}`);
-    const socket = io(`${host}/${payload}`, {path: socketPath});
+    console.log(`connecting socket /${payload}`);
+    const socket = io(`/${payload}`, {path: socketPath});
     socket.on('connect', () => {
       console.log('connected');
       socket.on('action', action => {
@@ -53,12 +52,16 @@ export default ({dispatch, getState}) => next => action => {
     });
   } else if (type == disconnectSocket) {
     console.log('disconnecting socket');
-    const socket = getState().sockets[action.payload];
-    if (socket) socket.disconnect();
+    const {sockets} = getState();
+    if (payload) {
+      const socket = sockets[payload];
+      if (socket) socket.disconnect();
+    } else {
+      Object.keys(sockets).forEach(e => { sockets[e].disconnect() });
+    }
     next(action);
   } else if (meta && meta.socket) {
     console.log('want send to socket', meta.socket);
-    console.log(action);
     const socket = getState().sockets[meta.socket];
     if (socket) {
       console.log(`socket found, emmiting ${type} with data: `, payload);

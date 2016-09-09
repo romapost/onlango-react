@@ -10,14 +10,9 @@ import {withRouter} from 'react-router';
 class Dashboard extends Component {
   componentWillMount() {
     if (!this.props.accessToken) this.props.router.push('/login');
-    else this.props.connectSocket('authorized');
-  }
-  componentWillUnmount() {
-    this.props.disconnectSocket('authorized');
   }
   componentWillReceiveProps(nextProps) {
     if (!nextProps.accessToken) this.props.router.push('/login');
-    if (Object.keys(nextProps.user).length === 0 && nextProps.authorizedSocket) this.props.getUserInfo();
   }
   render() {
     return <div id='dashboard'>
