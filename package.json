@@ -11,7 +11,7 @@
     "start": "NODE_ENV=production NODE_PATH=lib pm2 start server.js --name $npm_package_name --log logs/$npm_package_name.log",
     "restart": "NODE_ENV=production NODE_PATH=lib pm2 restart $npm_package_name",
     "stop": "pm2 stop $npm_package_name ; pm2 delete $npm_package_name",
-    "update": "( export NODE_ENV=production ; git checkout . ; git pull $npm_package_repository_url ; npm update ; npm prune ; pm2 update; npm restart )",
+    "update": "( export NODE_ENV=production ; git checkout . ; git pull ; npm update ; npm prune ; pm2 update; npm restart )",
     "logs": "pm2 logs"
   },
   "dependencies": {
