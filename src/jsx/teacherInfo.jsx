@@ -4,7 +4,8 @@ import {connect} from 'react-redux';
 import {getTeacherInfo} from 'actions';
 import {teacherInfo} from 'selectors';
 import moment from 'moment';
-import 'locales/ru';
+
+moment.locale('ru');
 
 class TeacherInfo extends Component {
   componentWillMount() {
@@ -25,7 +26,7 @@ class TeacherInfo extends Component {
               <Button className='center-block'>Записаться на урок</Button>
             </Col>
             <Col sm={4}>
-              <p><span className='title'>Стаж преподавания </span>{moment.duration(experience, 'y').humanize()}</p>
+              <p><span className='title'>Стаж преподавания </span>{experience ? moment.duration(experience, 'y').humanize() : 'нет'}</p>
               <p><span className='title'>Страна </span>{country}</p>
               <p><span className='title'>Преподаёт </span>{languages.join(', ')}</p>
               <p><span className='title'>Интересы </span>{interests}</p>

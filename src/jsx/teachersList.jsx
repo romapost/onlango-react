@@ -5,7 +5,6 @@ import {connect} from 'react-redux';
 import {filteredTeachersList, languages} from 'selectors';
 import {getTeachersList, filterTeachers, setTeachersListPage} from 'actions';
 import moment from 'moment';
-import 'locales/ru';
 
 moment.locale('ru');
 
@@ -13,7 +12,7 @@ const TeacherBlock = ({id, image, name, experience, country, languages}) => <Lin
   <Col xs={6} sm={4} md={3} className='teacherblock'>
     <Image src={image} circle className='center-block'/>
     <p>{name}</p>
-    <p><i className='fa fa-graduation-cap'></i> {moment.duration(experience, 'y').humanize()} <i className='fa fa-map-marker'></i> {country}</p>
+    <p><i className='fa fa-graduation-cap'></i> {experience ? moment.duration(experience, 'y').humanize() : 'нет'} <i className='fa fa-map-marker'></i> {country}</p>
   </Col>
 </LinkContainer>;
 

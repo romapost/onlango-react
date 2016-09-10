@@ -3,6 +3,7 @@ import {Grid, Row, Col, Panel, Button} from 'react-bootstrap';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 
+moment.locale('ru');
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
 export default class Schedule extends Component {
@@ -23,9 +24,10 @@ export default class Schedule extends Component {
               defaultDate={new Date(2015, 3, 1)}
               onSelectEvent={event => { console.log(event) }}
               onSelectSlot={slotInfo => {
-                console.log(slotInfo);
                 let {start, end} = slotInfo;
-                if (!start.getHours() && !end.getHours()) end.setDate(end.getDate() + 1);
+                if (start != end && !start.getHours() && !end.getHours()) {
+                  end.setDate(end.getDate() + 1);
+                }
                 this.setState({events: [...this.state.events, {start, end, title: 'lesson'}]});
               }}
             />

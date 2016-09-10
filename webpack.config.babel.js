@@ -51,6 +51,10 @@ const config = {
         }
       },
       {
+        test: /\.json$/,
+        loader: 'json-loader'
+      },
+      {
         test: /\.scss$/,
         loader: ExtractTextPlugin.extract(['css?sourceMap','sass?sourceMap'])
       },
@@ -61,6 +65,10 @@ const config = {
       {
         test: /\.(eot|svg|ttf|woff(2)?)(\?v=\d+\.\d+\.\d+)?/,
         loader: 'url'
+      },
+      {
+        test: /\.png$/,
+        loader: 'file'
       }
     ]
   },
@@ -86,7 +94,7 @@ const config = {
     new webpack.optimize.CommonsChunkPlugin('vendor', `vendor${minsuffix}.js`),
     new webpack.ProvidePlugin({'React': 'react'}),
     new webpack.SourceMapDevToolPlugin({
-      test: /bundle/,
+      test: [/bundle/, /main/],
       filename: '[file].map'
     }),
     new HtmlWebpackPlugin({

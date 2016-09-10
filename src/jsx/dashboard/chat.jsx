@@ -2,8 +2,13 @@ import {Component} from 'react';
 import {connect} from 'react-redux';
 import {Grid, Row, Col} from 'react-bootstrap';
 import {connectSocket, disconnectSocket, getUserInfo, newMessage, initChat} from 'actions';
+import {emojify} from 'react-emojione';
 import scrollIntoView from 'scroll-into-view';
+import moment from 'moment';
+import sprite from 'react-emojione/assets/emojione.sprites.png';
 
+moment.locale('ru');
+const backgroundImage = `url(${sprite})`;
 const defaultUserpic = '/userpic.jpg';
 const unknownUser = {
   name: 'unknown',
@@ -13,7 +18,8 @@ const unknownUser = {
 
 class Chat extends Component {
   state = {
-    message: ''
+    message: '',
+    height: 30
   };
   unknownUsers = [];
   requestedUsers = [];
@@ -23,8 +29,10 @@ class Chat extends Component {
   }
   sendMessage = e => {
     e.preventDefault();
-    this.props.newMessage(this.state.message);
-    this.setState({message: ''});
+    if (this.state.message) {
+      this.props.newMessage(this.state.message);
+      this.setState({message: '', height: 30});
+    }
   };
   componentWillMount() {
     this.props.connectSocket('chat');
@@ -34,14 +42,17 @@ class Chat extends Component {
     this.props.disconnectSocket('chat');
   }
   componentWillReceiveProps(nextProps) {
-    if (!this.props.chat && nextProps.chat) this.props.initChat();
+    if (!this.props.chat && nextProps.chat) {
+      this.props.initChat(this.props.messages.length && this.props.messages.reduce((s, e) => s.time > e.time ? s : e).time);
+    }
   }
   componentDidUpdate() {
     this.unknownUsers.forEach(e => {
       if (this.requestedUsers.indexOf(e) == -1) this.props.getUserInfo(e);
       this.requestedUsers.push(e);
     });
-    scrollIntoView(this.refs.input);
+    if (this.refs.message.scrollHeight != this.state.height) this.setState({height: this.refs.message.scrollHeight});
+    scrollIntoView(this.refs.message);
   }
   render() {
     const {user, users, usersOnline, messages} = this.props;
@@ -71,7 +82,7 @@ class Chat extends Component {
           </div>
         </Col>
         <Col sm={9} xs={12}>
-          <div className='col-inside-lg decor-default' style={{height: '80vh', 'overflow-y': 'scroll'}}>
+          <div className='col-inside-lg decor-default' style={{height: '80vh', 'overflowY': 'auto'}}>
             <div className='chat-body'>
               <h6>Chat</h6>
               {messages.map((e, i) => {
@@ -91,15 +102,17 @@ class Chat extends Component {
                     <div className={`status ${status}`}></div>
                   </div>
                   <div className='name'>{name}</div>
-                  <div className='text'>{text}</div>
-                  <div className='time'>{new Date(time).toString()}</div>
+                  <div className='text'>{emojify(text, {styles: {backgroundImage}})}</div>
+                  <div className='time'>{moment(time).fromNow()}</div>
                 </div>;
               })}
               <div className='answer-add'>
-                <input placeholder='Write a message' name='message' onKeyPress={e => {
-                  if (e.key == 'Enter') this.sendMessage(e);
-                }} onChange={this.handleChange} value={this.state.message} ref='input' />
+                <textarea placeholder='Write a message' name='message' onKeyPress={e => {
+                  console.log(e);
+                  if (e.key == 'Enter' && !e.shiftKey) this.sendMessage(e);
+                }} onChange={this.handleChange} value={this.state.message} ref='message' style={{height: this.state.height}}/>
                 {/* <span className='answer-btn answer-btn-1'></span> */}
+
                 <span className='answer-btn answer-btn-2' onClick={this.sendMessage}></span>
               </div>
             </div>

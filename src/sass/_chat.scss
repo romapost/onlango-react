@@ -125,6 +125,7 @@
     font-size: 16px;
     line-height: 26px;
     position: relative;
+    white-space: pre-wrap;
 }
 .chat-body .answer.left .text:before {
     left: -30px;
@@ -152,7 +153,7 @@
 /*RIGHT*/
 .chat-body .answer.right {
     padding: 0 58px 0 0;
-    text-align: right;
+    // text-align: right;
     float: right;
 }
 
@@ -185,7 +186,7 @@
     padding: 20px;
     background: #46be8a;
 }
-.chat-body .answer-add input {
+.chat-body .answer-add textarea {
     border: none;
     background: none;
     display: block;
@@ -194,8 +195,12 @@
     line-height: 20px;
     padding: 0;
     color: #ffffff;
+
+    &:focus {
+      outline: none;
+    }
 }
-.chat input {
+.chat textarea {
     -webkit-appearance: none;
     border-radius: 0;
 }
@@ -216,22 +221,22 @@
     background: url("http://91.234.35.26/iwiki-admin/v1.0.0/admin/img/icon-41.png") 50% 50% no-repeat;
     right: 20px;
 }
-.chat input::-webkit-input-placeholder {
+.chat textarea::-webkit-input-placeholder {
    color: #fff;
 }
 
-.chat input:-moz-placeholder { /* Firefox 18- */
+.chat textarea:-moz-placeholder { /* Firefox 18- */
    color: #fff;
 }
 
-.chat input::-moz-placeholder {  /* Firefox 19+ */
+.chat textarea::-moz-placeholder {  /* Firefox 19+ */
    color: #fff;
 }
 
-.chat input:-ms-input-placeholder {
+.chat textarea:-ms-input-placeholder {
    color: #fff;
 }
-.chat input {
+.chat textarea {
     -webkit-appearance: none;
     border-radius: 0;
 }

@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {Grid, Row, Col} from 'react-bootstrap';
 import Header from './header.jsx';
 import Sidebar from './sidebar.jsx';
-import {connectSocket, disconnectSocket, getUserInfo} from 'actions';
 import {withRouter} from 'react-router';
 
 
@@ -32,6 +31,5 @@ class Dashboard extends Component {
 }
 
 export default connect(
-  ({authorization: {accessToken}, sockets: {authorized: authorizedSocket}, user}) => ({accessToken, authorizedSocket, user}),
-  {connectSocket, disconnectSocket, getUserInfo}
+  ({authorization: {accessToken}, sockets: {authorized: authorizedSocket}, user}) => ({accessToken, authorizedSocket, user})
 )(withRouter(Dashboard));

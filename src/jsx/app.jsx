@@ -1,6 +1,6 @@
 import {Component} from 'react';
 import {connect} from 'react-redux';
-import {connectSocket, getUserInfo} from 'actions';
+import {connectSocket, disconnectSocket, getUserInfo} from 'actions';
 
 class App extends Component {
   componentWillMount() {
@@ -8,8 +8,10 @@ class App extends Component {
     if (this.props.accessToken) this.props.connectSocket('authorized');
   }
   componentWillReceiveProps(nextProps) {
-    if (!this.props.accessToken && nextProps.accessToken && !this.props.sockets.authorized) this.props.connectSocket('authorized');
-    if (!this.props.sockets.authorized && Object.keys(nextProps.user).length === 0 && nextProps.sockets.authorized) this.props.getUserInfo();
+    const {accessToken, sockets, connectSocket, disconnectSocket, getUserInfo} = this.props;
+    if (!accessToken && nextProps.accessToken && !sockets.authorized) connectSocket('authorized');
+    if (accessToken && !nextProps.accessToken && sockets.authorized) disconnectSocket('authorized');
+    if (!sockets.authorized && Object.keys(nextProps.user).length === 0 && nextProps.sockets.authorized) getUserInfo();
   }
   componentWillUnmount() {
     this.props.disconnectSocket();
@@ -19,4 +21,4 @@ class App extends Component {
   }
 }
 
-export default connect(({authorization: {accessToken}, sockets, user}) => ({accessToken, sockets, user}), {connectSocket, getUserInfo})(App);
+export default connect(({authorization: {accessToken}, sockets, user}) => ({accessToken, sockets, user}), {connectSocket, disconnectSocket, getUserInfo})(App);
