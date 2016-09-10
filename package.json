@@ -58,7 +58,7 @@
     "react-redux": "*",
     "react-router": "*",
     "react-router-bootstrap": "*",
-    "react-sound": "^0.5.2",
+    "react-sound": "*",
     "redux": "*",
     "redux-thunk": "*",
     "reselect": "*",
