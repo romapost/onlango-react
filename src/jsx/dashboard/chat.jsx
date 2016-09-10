@@ -1,11 +1,13 @@
 import {Component} from 'react';
 import {connect} from 'react-redux';
 import {Grid, Row, Col} from 'react-bootstrap';
+import Sound from 'react-sound';
 import {connectSocket, disconnectSocket, getUserInfo, newMessage, initChat} from 'actions';
 import {emojify} from 'react-emojione';
 import scrollIntoView from 'scroll-into-view';
 import moment from 'moment';
 import sprite from 'react-emojione/assets/emojione.sprites.png';
+import beep from 'assets/bling1.mp3';
 
 moment.locale('ru');
 const backgroundImage = `url(${sprite})`;
@@ -45,6 +47,9 @@ class Chat extends Component {
     if (!this.props.chat && nextProps.chat) {
       this.props.initChat(this.props.messages.length && this.props.messages.reduce((s, e) => s.time > e.time ? s : e).time);
     }
+    if (this.props.messages.length != nextProps.messages.length) {
+      this.setState({beep: true});
+    }
   }
   componentDidUpdate() {
     this.unknownUsers.forEach(e => {
@@ -57,6 +62,11 @@ class Chat extends Component {
   render() {
     const {user, users, usersOnline, messages} = this.props;
     return <Grid fluid className='chat'>
+      <Sound
+        url={beep}
+        playStatus={this.state.beep ? Sound.status.PLAYING : Sound.status.STOPPED}
+        onFinishedPlaying={() => { this.setState({beep: undefined}) }}
+      />
       <Row>
         <Col sm={3} xs={12}>
           <div className='col-inside-lg decor-default chat' style={{overflow: 'hidden', outline: 'none'}} tabIndex='5000'>
@@ -108,7 +118,6 @@ class Chat extends Component {
               })}
               <div className='answer-add'>
                 <textarea placeholder='Write a message' name='message' onKeyPress={e => {
-                  console.log(e);
                   if (e.key == 'Enter' && !e.shiftKey) this.sendMessage(e);
                 }} onChange={this.handleChange} value={this.state.message} ref='message' style={{height: this.state.height}}/>
                 {/* <span className='answer-btn answer-btn-1'></span> */}

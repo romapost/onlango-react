@@ -67,7 +67,7 @@ const config = {
         loader: 'url'
       },
       {
-        test: /\.png$/,
+        test: /\.(png|mp3)$/,
         loader: 'file'
       }
     ]

@@ -68,8 +68,11 @@ $breakpoints: (
   }
 }
 
-.main-page {
+#root > div > div {
   min-height: 100vh;
+}
+
+.main-page {
   position: relative;
   > .container-fluid {
     padding-bottom: 5rem;
