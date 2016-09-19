@@ -12,7 +12,7 @@ const messages = handleActions({
   [newMessage]: (state, {payload}) => [...state, payload],
   [joinRoom]: (state, {payload: {lastMessages = []}}) => {
     console.log(lastMessages);
-    return [...state, ...lastMessages];
+    return lastMessages;
   }
 }, []);
 

@@ -15,8 +15,7 @@ const backgroundImage = `url(${sprite})`;
 const defaultUserpic = '/userpic.jpg';
 const unknownUser = {
   name: 'unknown',
-  img: defaultUserpic,
-  status: 'unknown'
+  img: defaultUserpic
 };
 
 class Chat extends Component {
@@ -89,11 +88,11 @@ class Chat extends Component {
                 if (this.unknownUsers.indexOf(e) == -1) this.unknownUsers.push(e);
                 return;
               }
-              const {image, name, status} = users[e];
+              const {image, name, status = []} = users[e];
               return <div key ={i} className='user'>
                 <div className='avatar'>
                   <img src={image || defaultUserpic} alt='User name' />
-                  <div className={`status ${status}`}></div>
+                  <div className={`status`}>{status.join(', ')}</div>
                 </div>
                 <div className='name'>{name}</div>
               </div>;
@@ -113,14 +112,15 @@ class Chat extends Component {
                 if (this.unknownUsers.indexOf(e.userId) == -1) this.unknownUsers.push(e.userId);
                 userinfo = unknownUser;
               }
-              let {name, image, status} = userinfo;
+              let {name, image, status = []} = userinfo;
+              console.log(status)
               if (!image) image = defaultUserpic;
               const answer = self ? 'right' : 'left';
               const {body, timestamp} = e;
               return <div key={i} className={`answer ${answer}`}>
                 <div className='avatar'>
                   <img src={image} alt='User name' />
-                  <div className={`status ${status}`}></div>
+                  <div className={`status`}>{status.join(', ')}</div>
                 </div>
                 <div className='name'>{name}</div>
                 <div className='text'>{emojify(body, {styles: {backgroundImage}})}</div>
