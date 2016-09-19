@@ -1,24 +1,50 @@
-import {Component} from 'react';
+import {Component, PropTypes} from 'react';
+import {Grid} from 'react-bootstrap';
 import {connect} from 'react-redux';
-import {connectSocket, disconnectSocket, getUserInfo} from 'actions';
+import {login, getUserInfo, logout} from 'actions';
 
 class App extends Component {
-  componentWillMount() {
-    this.props.connectSocket('common');
-    if (this.props.accessToken) this.props.connectSocket('authorized');
+  state = {count: 0};
+  static childContextTypes = {
+    socket: PropTypes.object,
+    user: PropTypes.object,
+    logout: PropTypes.func
+  };
+  static contextTypes = {
+    router: PropTypes.object
+  };
+  getChildContext() {
+    const {socket, user, logout} = this.props;
+    return {socket, user, logout};
   }
   componentWillReceiveProps(nextProps) {
-    const {accessToken, sockets, connectSocket, disconnectSocket, getUserInfo} = this.props;
-    if (!accessToken && nextProps.accessToken && !sockets.authorized) connectSocket('authorized');
-    if (accessToken && !nextProps.accessToken && sockets.authorized) disconnectSocket('authorized');
-    if (!sockets.authorized && Object.keys(nextProps.user).length === 0 && nextProps.sockets.authorized) getUserInfo();
-  }
-  componentWillUnmount() {
-    this.props.disconnectSocket();
+    const {socket, token, login, getUserInfo, location: {pathname}} = this.props;
+    const {state, access_token} = this.props.location.hash.slice(1).split('&').reduce((s, e) => {
+      const [name, value = true] = e.split('=');
+      s[name] = value;
+      return s;
+    }, {});
+    if (!socket.connected && nextProps.socket.connected) {
+      console.log(token)
+      if (token) login({token});
+      else if (access_token) this.props.login({access_token, state});
+    }
+    if (!socket.authorized && nextProps.socket.authorized) {
+      if (Object.keys(nextProps.user).length === 0) getUserInfo();
+      if (/(?:login|register)/.test(pathname)) this.context.router.push('/dashboard');
+    }
   }
   render() {
-    return <div>{this.props.children}</div>;
+    return <Grid fluid>{this.props.children}</Grid>;
   }
 }
 
-export default connect(({authorization: {accessToken}, sockets, user}) => ({accessToken, sockets, user}), {connectSocket, disconnectSocket, getUserInfo})(App);
+const mapStateToProps = ({
+  token, socket, user
+}) => ({
+  token, socket, user
+});
+
+const mapDispatchToProps = {login, getUserInfo, logout};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

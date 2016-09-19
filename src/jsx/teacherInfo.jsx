@@ -9,17 +9,17 @@ moment.locale('ru');
 
 class TeacherInfo extends Component {
   componentWillMount() {
-    if (this.props.commonSocket) this.props.getTeacherInfo(this.props.params.id);
+    if (this.props.socket.connected) this.props.getTeacherInfo(this.props.params.id);
   }
   componentWillReceiveProps(nextProps) {
-    if (!this.props.commonSocket && nextProps.commonSocket) this.props.getTeacherInfo(this.props.params.id);
+    if (!this.props.socket.connected && nextProps.socket) this.props.getTeacherInfo(this.props.params.id);
   }
   render() {
     const {experience, languages = [], interests, aboutSelf, country, image, name} = this.props.teacherInfo || {};
     return <Row>
       <Col sm={10} smOffset={1}>
         <Panel className='teacher-info'>
-        <h2>{name}</h2>
+          <h2>{name}</h2>
           <Row>
             <Col sm={3}>
               <Image src={image} rounded className='center-block'/>
@@ -40,9 +40,9 @@ class TeacherInfo extends Component {
 }
 
 export default connect(
-  ({teachers, sockets}, ownProps) => ({
+  ({teachers, socket}, ownProps) => ({
     teacherInfo: teacherInfo(teachers, ownProps),
-    commonSocket: sockets.common
+    socket
   }),
   {getTeacherInfo}
 )(TeacherInfo);

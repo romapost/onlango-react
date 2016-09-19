@@ -11,7 +11,7 @@ export default handleActions({
   },
   [editUserInfo]: (state, {payload}) => {
     for (const field in payload) {
-      if (payload[field] !== state[field]) return {...payload};
+      if (payload[field] !== state[field]) return {...state, ...payload};
     }
     return state;
   },

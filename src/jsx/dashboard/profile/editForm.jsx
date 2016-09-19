@@ -1,10 +1,8 @@
 import {Component} from 'react';
-import {Image, Row, Col, Form, FormGroup, FormControl, ControlLabel, Button} from 'react-bootstrap';
+import {Image, Panel, Row, Col, Form, FormGroup, FormControl, ControlLabel, Button} from 'react-bootstrap';
 import Dropzone from 'react-dropzone';
-import {connect} from 'react-redux';
-import {editUserInfo, submitUserInfo, uploadUserImage} from 'actions';
 
-class DateSelector extends React.Component {
+class DateSelector extends Component {
   state = {
     months: 'Январь,Февраль,Март,Апрель,Май,Июнь,Июль,Август,Сентябрь,Октябрь,Ноябрь,Декабрь'.split(','),
     years: Array.apply(null, Array(100)).map((e, i) => i + 1930)
@@ -16,29 +14,31 @@ class DateSelector extends React.Component {
   componentWillMount() {
     this.composeDays(this.props);
   }
-  componentWillReceiveProps(nextProps, nextState, nextContext) {
+  componentWillReceiveProps(nextProps, nextState) {
     if (nextProps.month != this.props.month || nextProps.year != this.props.year)
       this.composeDays(nextProps);
   }
   render() {
     const {day, month, year} = this.props;
     const d = <option>-</option>;
-    return <Col sm={6}>
-      <FormGroup>
-        <ControlLabel>Дата рождения</ControlLabel>
-        <Row>
-          <Col sm={3}><FormControl id='day' name='day' componentClass='select' value={day}>
-            {d}{this.state.days.map((e, i) => <option key={i} value={e}>{e}</option>)}
-          </FormControl></Col>
-          <Col sm={5}><FormControl id='mounth' name='month' componentClass='select' value={month}>
-            {d}{this.state.months.map((e, i) => <option key={i} value={i}>{e}</option>)}
-          </FormControl></Col>
-          <Col sm={4}><FormControl id='year' name='year' componentClass='select' value={year}>
-            {d}{this.state.years.map((e, i) => <option key={i} value={e}>{e}</option>)}
-          </FormControl></Col>
-        </Row>
-      </FormGroup>
-    </Col>;
+    return <Panel>
+      <Col sm={6}>
+        <FormGroup>
+          <ControlLabel>Дата рождения</ControlLabel>
+          <Row>
+            <Col sm={3}><FormControl id='day' name='day' componentClass='select' value={day}>
+              {d}{this.state.days.map((e, i) => <option key={i} value={e}>{e}</option>)}
+            </FormControl></Col>
+            <Col sm={5}><FormControl id='mounth' name='month' componentClass='select' value={month}>
+              {d}{this.state.months.map((e, i) => <option key={i} value={i}>{e}</option>)}
+            </FormControl></Col>
+            <Col sm={4}><FormControl id='year' name='year' componentClass='select' value={year}>
+              {d}{this.state.years.map((e, i) => <option key={i} value={e}>{e}</option>)}
+            </FormControl></Col>
+          </Row>
+        </FormGroup>
+      </Col>
+    </Panel>;
   }
 }
 
@@ -98,7 +98,7 @@ class EditForm extends Component{
       <Row>
         <Col md={10} mdOffset={1}>
           <Row>
-            <Image src={image} style={{margin: '2rem'}} circle/>
+            <Image src={image} style={{margin: '2rem', width: '10rem'}} circle/>
             <Button bsStyle='primary' onClick={this.openHandler}>Загрузить фото</Button>
           </Row>
           <Form onChange={this.changeHandler} onSubmit={this.submitHandler}>
@@ -131,4 +131,4 @@ class EditForm extends Component{
   }
 }
 
-export default connect(({user}) => ({user}), {editUserInfo, submitUserInfo, uploadUserImage})(EditForm);
+export default EditForm;

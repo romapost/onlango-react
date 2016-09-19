@@ -1,31 +1,28 @@
 import {createActions} from 'redux-actions';
 
 const {
-  connectSocket,
-  disconnectSocket,
   logout,
   editUserInfo,
   filterTeachers,
   setTeachersListPage,
+  socketConnected,
+  socketDisconnected,
 } = createActions(
   {
-    'CONNECT_SOCKET': [
-      name => name,
-      name => ({requireAuth: name == 'common' ? false : true})
-    ]
+    'LOGOUT': [undefined, () => ({passNext: true})]
   },
-  'DISCONNECT_SOCKET',
-  'LOGOUT',
   'EDIT_USER_INFO',
   'FILTER_TEACHERS',
-  'SET_TEACHERS_LIST_PAGE'
+  'SET_TEACHERS_LIST_PAGE',
+  'SOCKET_CONNECTED',
+  'SOCKET_DISCONNECTED'
 );
 
 export {
-  connectSocket,
-  disconnectSocket,
   logout,
   editUserInfo,
   filterTeachers,
   setTeachersListPage,
+  socketConnected,
+  socketDisconnected,
 };

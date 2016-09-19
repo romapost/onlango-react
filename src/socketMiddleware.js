@@ -1,81 +1,43 @@
-import {connectSocket, disconnectSocket} from 'actions';
 import io from 'socket.io-client';
-import {login} from 'actions';
+import * as socketActions from 'actions/socket';
+import {socketConnected, socketDisconnected} from 'actions';
 
-const socketPath = '/api';
+const socket = io({path: '/api'});
 
-const socketAction = ({type, payload: name}, socket) => ({
-  type,
-  payload: {name, socket}
-});
+const list = Object
+  .keys(socketActions)
+  .reduce((s, e) => {
+    if (typeof socketActions[e] == 'function') s.push(socketActions[e].toString());
+    return s;
+  }, []);
 
-const clear = action => {
-  if ('meta' in action) {
-    if ('meta' in action && 'socket' in action.meta) {
-      if (Object.keys(action.meta).length == 1) delete action.meta;
-      else delete action.meta.socket;
-    }
-  }
+function assignServerMeta(action) {
+  const meta = {fromServer: true};
+  if (typeof action.meta == 'undefined') Object.assign(action, {meta});
+  else if (typeof action.meta == 'object') Object.assign(action.meta, meta);
   return action;
-};
+}
 
-export default ({dispatch, getState}) => next => action => {
-  console.log(action);
-  const {type, meta, payload} = action;
-  if (type == connectSocket) {
-    console.log(`connecting socket /${payload}`);
-    const socket = io(`/${payload}`, {path: socketPath});
-    socket.on('connect', () => {
-      console.log('connected');
-      socket.on('action', action => {
-        console.log('Receiving action from server', action);
-        dispatch(clear(action));
-      });
-      if (meta && meta.requireAuth) {
-        console.log('requireAuth');
-        const token = getState().authorization.accessToken;
-        socket
-          .emit('authenticate', {token})
-          .on('authenticated', () => {
-            console.log('authenticated');
-            next(socketAction(action, socket));
-          })
-          .on('unauthorized', (...args) => {
-            console.log(args);
-            console.log('unauthorized');
-            dispatch(clear(login(new Error('Unauthorized'))));
-          });
-      } else {
-        console.log(action);
-        next(socketAction(action, socket));
+export default ({dispatch}) => {
+  socket.on('connect', () => { console.log('connect'); dispatch(socketConnected()) });
+  socket.on('disconnect', () => { console.log('disconnect'); dispatch(socketDisconnected()) });
+  socket.on('reconnect', () => { console.log('reconnect') });
+
+  socket.on('dispatch', action => { dispatch(assignServerMeta(action)) });
+
+  return next => action => {
+    console.log(action)
+    const {meta: {fromServer, passNext, cb} = {}} = action;
+    if (!fromServer && socket.connected && list.indexOf(action.type) !== -1) {
+      if (!fromServer && socket) {
+        const data = ['dispatch', action];
+        if (typeof cb == 'function') data.push(cb);
+        socket.emit(...data);
       }
-    });
-  } else if (type == disconnectSocket) {
-    console.log('disconnecting socket');
-    const {sockets} = getState();
-    if (payload) {
-      const socket = sockets[payload];
-      if (socket) socket.disconnect();
+      if (passNext) next(action);
     } else {
-      Object.keys(sockets).forEach(e => { sockets[e].disconnect() });
+      next(action);
     }
-    next(action);
-  } else if (meta && meta.socket) {
-    console.log('want send to socket', meta.socket);
-    const socket = getState().sockets[meta.socket];
-    if (socket) {
-      console.log(`socket found, emmiting ${type} with data: `, payload);
-      socket.emit(type, payload);
-    } else {
-      console.log('socket not found');
-      next({
-        type,
-        error: true,
-        payload: new Error('Socket not connected'),
-        meta: action
-      });
-    }
-  } else {
-    next(action);
-  }
+  };
+
 };

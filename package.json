@@ -12,12 +12,14 @@
     "restart": "NODE_ENV=production NODE_PATH=lib pm2 restart $npm_package_name",
     "stop": "pm2 stop $npm_package_name ; pm2 delete $npm_package_name",
     "update": "( export NODE_ENV=production ; git checkout . ; git pull ; npm update ; npm prune ; pm2 update; npm restart )",
-    "logs": "pm2 logs"
+    "logs": "pm2 logs",
+    "test": "NODE_PATH=lib node -r babel-register ${@:-test/**} | tap-spec"
   },
   "dependencies": {
     "babel-core": "*",
     "babel-plugin-transform-async-to-generator": "*",
     "babel-plugin-transform-class-properties": "*",
+    "babel-plugin-transform-es2015-destructuring": "*",
     "babel-plugin-transform-es2015-modules-commonjs": "*",
     "babel-plugin-transform-object-rest-spread": "*",
     "babel-register": "*",
@@ -27,6 +29,7 @@
     "mongodb": "*",
     "pm2": "*",
     "redux-actions": "*",
+    "request": "*",
     "scrypt": "*",
     "socket.io": "*",
     "socketio-jwt": "*",
@@ -46,6 +49,7 @@
     "include-media": "*",
     "json-loader": "*",
     "moment": "*",
+    "moment-timezone": "^0.5.5",
     "node-sass": "*",
     "pug": "*",
     "pug-loader": "*",
@@ -76,6 +80,7 @@
       "transform-async-to-generator",
       "transform-class-properties",
       "transform-es2015-modules-commonjs",
+      "transform-es2015-destructuring",
       "transform-object-rest-spread"
     ]
   }

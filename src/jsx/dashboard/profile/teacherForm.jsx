@@ -1,8 +1,6 @@
 import {Component} from 'react';
 import {Row, Col, FormGroup, FormControl, ControlLabel, Radio, Panel, HelpBlock, Button, Modal} from 'react-bootstrap';
-import {connect} from 'react-redux';
-import {submitTeacherForm} from 'actions';
-import {languages} from 'config/client';
+import {languages} from 'config';
 
 const ages = ['6 месяцев', '1 год',  '2 года', '3 года', '5 лет'];
 const weekHours = ['0 до 10', 'от 10 до 20', 'от 20 до 30', 'от 30 до 40'];
@@ -134,14 +132,13 @@ const Contacts = props => <Panel header='4. Контактная информа�
 class TeacherForm extends Component {
   componentWillMount() {
     this.applyInfo(this.props.user);
-    if (this.props.authoriaedSocket) this.props.submitTeacherForm();
+    this.props.submitTeacherForm();
   }
   componentWillReceiveProps(nextProps) {
-    if (this.props.user != nextProps.user) {
-      console.log(1);
+    const {user} = this.props;
+    if (user != nextProps.user) {
       this.applyInfo(nextProps.user);
     }
-    if (!this.props.authoriaedSocket && nextProps.authoriaedSocket) this.props.submitTeacherForm();
   }
   state = {
     submitDisabled: true,
@@ -150,7 +147,6 @@ class TeacherForm extends Component {
     resumeFile: null
   };
   applyInfo(user) {
-    console.log(user);
     this.setState({
       form: 'experience,experienceOnline,hoursCanTeach,aboutSelf,street,street2,zipcode,city,state,country,phone,skype'
       .split(',')
@@ -200,7 +196,7 @@ class TeacherForm extends Component {
   openModal = () => { this.setState({showModal: true}) }
   closeModal = () => { this.setState({showModal: false}) };
   render() {
-    console.log(this.state, this.state.form);
+    console.log(this.state, this.state.form)
     return <Panel className='become-teacher modal-container'>
       <form onChange={this.changeHandler} onSubmit={this.submitHandler}>
         <Experience {...this.state.form} />
@@ -217,4 +213,4 @@ class TeacherForm extends Component {
   }
 }
 
-export default connect(({user, sockets: {authorized: authoriaedSocket}}) => ({user, authoriaedSocket}), {submitTeacherForm})(TeacherForm);
+export default TeacherForm;

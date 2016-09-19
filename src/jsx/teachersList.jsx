@@ -17,9 +17,6 @@ const TeacherBlock = ({id, image, name, experience, country, languages}) => <Lin
 </LinkContainer>;
 
 class TecherList extends Component {
-  componentWillMount() {
-    if (this.props.commonSocket) this.props.getTeachersList();
-  }
   filter = (e) => {
     const {id, selectedIndex} = e.target;
     if (typeof selectedIndex !== 'undefined') {
@@ -27,8 +24,15 @@ class TecherList extends Component {
       this.props.filterTeachers({id, value});
     }
   };
+  componentWillMount() {
+    if (this.props.socket.connected) {
+      this.props.getTeachersList();
+    }
+  }
   componentWillReceiveProps(nextProps) {
-    if (!this.props.commonSocket && nextProps.commonSocket) this.props.getTeachersList();
+    if (!this.props.socket.connected && nextProps.socket.connected) {
+      this.props.getTeachersList();
+    }
   }
   render() {
     const {list, activePage, totalPages} = this.props.list;
@@ -56,9 +60,9 @@ class TecherList extends Component {
   }
 }
 
-export default connect(({teachers, sockets}, ownProps) => ({
+export default connect(({teachers, socket}, ownProps) => ({
   list: filteredTeachersList(teachers, ownProps),
   languages: languages(teachers, ownProps),
   language: teachers.filter.languages,
-  commonSocket: sockets.common
+  socket
 }), {getTeachersList, filterTeachers, setTeachersListPage})(TecherList);

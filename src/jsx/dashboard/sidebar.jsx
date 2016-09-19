@@ -9,7 +9,6 @@ const Sidebar = props => <ListGroup fill>
   <LinkContainer to='/archive'><ListGroupItem>Архив</ListGroupItem></LinkContainer>
   <LinkContainer to='/tests'><ListGroupItem>Тесты</ListGroupItem></LinkContainer>
   <LinkContainer to='/help'><ListGroupItem>Помощь</ListGroupItem></LinkContainer>
-  <LinkContainer to='/chat'><ListGroupItem>Чат</ListGroupItem></LinkContainer>
 </ListGroup>;
 
 export default Sidebar;

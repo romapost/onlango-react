@@ -1,7 +1,5 @@
 import {Component} from 'react';
-import {Row, Col, FormGroup, FormControl, ControlLabel, Button} from 'react-bootstrap';
-import {connect} from 'react-redux';
-import {changePassword} from 'actions';
+import {Panel, Col, FormGroup, FormControl, ControlLabel, Button} from 'react-bootstrap';
 
 class ChangePasswordForm extends Component {
   state = {submitDisabled: false};
@@ -15,7 +13,7 @@ class ChangePasswordForm extends Component {
   };
   submitHandler = e => {
     e.preventDefault();
-    console.log(this.password);
+    console.log(this.password)
     this.props.changePassword(this.password);
   };
   setRetypeWarning = (retypeWarning, bool) => {
@@ -27,8 +25,8 @@ class ChangePasswordForm extends Component {
     else if (!bool && submitDisabled) this.setState({submitDisabled: false});
   }
   render() {
-    return <Row className='panel' style={{padding: '5rem 2rem'}}>
-      <Col sm={4} smOffset={4}>
+    return <Panel>
+      <Col sm={4} smOffset={4} style={{padding: '5rem 2rem'}}>
         <form onChange={this.changeHandler} onSubmit={this.submitHandler}>
           <FormGroup controlId='password'>
             <ControlLabel>Новый пароль</ControlLabel>
@@ -42,8 +40,8 @@ class ChangePasswordForm extends Component {
           <Button bsStyle='primary' type='submit' block className='save' disabled={this.state.submitDisabled}>Сменить пароль</Button>
         </form>
       </Col>
-    </Row>;
+    </Panel>;
   }
 }
 
-export default connect(null, {changePassword})(ChangePasswordForm);
+export default ChangePasswordForm;

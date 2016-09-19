@@ -1,10 +1,11 @@
 import App from 'app';
 import MainPage from 'mainPage';
 import NotFound from 'notFound';
-import Dashboard, {Profile, ProfileEdit, Schedule, Chat} from 'dashboard';
+import Dashboard, {Profile, ProfileEdit, Schedule, ClassRoom} from 'dashboard';
 import Entrance, {Login, Register} from 'entrance';
 import TeachersList from 'teachersList';
 import TeacherInfo from 'teacherInfo';
+import Admin, {Rooms} from 'admin';
 
 export default [
   {
@@ -26,7 +27,15 @@ export default [
           {path: 'archive', component: NotFound},
           {path: 'tests', component: NotFound},
           {path: 'help', component: NotFound},
-          {path: 'chat', component: Chat},
+          {path: 'class/:id', component: ClassRoom},
+        ]
+      },
+      {
+        path: 'admin',
+        component: Admin,
+        indexRoute: {component: Rooms},
+        childRoutes: [
+          {path: 'rooms', component: Rooms},
         ]
       },
       {

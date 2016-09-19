@@ -1,4 +1,4 @@
-import createSocketActions from './createSocketActions';
+import {createActions} from 'redux-actions';
 
 const {
   changePassword,
@@ -6,7 +6,7 @@ const {
   uploadUserImage,
   submitUserInfo,
   submitTeacherForm,
-} = createSocketActions('authorized')(
+} = createActions(
   'CHANGE_PASSWORD',
   'GET_USER_INFO',
   'SUBMIT_USER_INFO',

@@ -1,15 +1,16 @@
 import {combineReducers} from 'redux';
 import {handleActions} from 'redux-actions';
 import {
+  joinRoom,
   newMessage,
   getUserInfo,
   changeChatStatus,
-  initChat,
+  setLastReceive,
 } from 'actions';
 
 const messages = handleActions({
   [newMessage]: (state, {payload}) => [...state, payload],
-  [initChat]: (state, {payload: {lastMessages = []}}) => {
+  [joinRoom]: (state, {payload: {lastMessages = []}}) => {
     console.log(lastMessages);
     return [...state, ...lastMessages];
   }
@@ -27,11 +28,17 @@ const usersOnline = handleActions({
       default: return state;
     }
   },
-  [initChat]: (state, {payload: {usersOnline}}) => usersOnline
+  [joinRoom]: (state, {payload: {usersOnline}}) => Array.isArray(usersOnline) ? usersOnline : []
 }, []);
+
+const lastReceive = handleActions({
+  [setLastReceive]: (state, {payload}) => payload,
+  [joinRoom]: (state, {payload: {lastReceive}}) => lastReceive
+}, null);
 
 export default combineReducers({
   users,
   usersOnline,
-  messages
+  messages,
+  lastReceive
 });
