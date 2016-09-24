@@ -57,7 +57,6 @@ class Rooms extends Component {
   render() {
     const rows = [];
     const sortedRooms = Array.from(this.props.rooms).sort((a, b) => a.createdAt - b.createdAt);
-    console.log(sortedRooms)
     for (const room of sortedRooms) {
       const {id} = room;
       rows.push(<TableRow key={id} {...room} onClick={this.trClickHandler(id)}/>);

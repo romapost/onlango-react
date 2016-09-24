@@ -1,220 +1,128 @@
-.row.row-broken {
-    padding-bottom: 0;
-}
-.col-inside-lg {
-    padding: 20px;
-}
-.chat {
-    // height: calc(100vh - 180px);
-}
-.decor-default {
-    background-color: #ffffff;
-    margin: 0 15px;
-}
-.chat-users h6 {
-    font-size: 20px;
-    margin: 0 0 20px;
-}
-.chat-users .user {
-    position: relative;
-    padding: 0 0 0 50px;
-    display: block;
-    cursor: pointer;
-    margin: 0 0 20px;
-}
-.chat-users .user .avatar {
-    top: 0;
-    left: 0;
-}
-.chat .avatar {
-    width: 40px;
-    height: 40px;
-    position: absolute;
-}
-.chat .avatar img {
-    display: block;
-    border-radius: 20px;
-    height: 100%;
-}
-.chat .avatar .status.off {
-    border: 1px solid #5a5a5a;
-    background: #ffffff;
-}
-.chat .avatar .status.online {
-    background: #4caf50;
-}
-.chat .avatar .status.busy {
-    background: #ffc107;
-}
-.chat .avatar .status.offline {
-    background: #ed4e6e;
-}
-.chat-users .user .status {
-    bottom: 0;
-    left: 28px;
-}
-.chat .avatar .status {
-    width: 10px;
-    height: 10px;
-    border-radius: 5px;
-    position: absolute;
-}
-.chat-users .user .name {
-    font-size: 14px;
-    font-weight: bold;
-    line-height: 20px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.chat-users .user .mood {
-    font: 200 14px/20px "Raleway", sans-serif;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-/*****************CHAT BODY *******************/
-.chat-body {
-  h6 {
-    font-size: 20px;
-    margin: 0 0 20px;
-  }
-
-  .answer {
-    clear: both;
-    position: relative;
-    max-width: 600px;
-    overflow: hidden;
-
-    .avatar {
-      bottom: 36px;
-
-      .status {
-        bottom: 0;
-      }
-    }
-
-    .name {
-      font-size: 14px;
-      line-height: 36px;
-    }
-
-    .text {
-      padding: 12px;
-      font-size: 16px;
-      line-height: 26px;
-      position: relative;
-      white-space: pre-wrap;
-
-      &:before {
-        content: '';
-        display: block;
-        position: absolute;
-        bottom: 0;
-        border: 18px solid transparent;
-        border-bottom-width: 0;
-      }
-    }
-
-    .time {
-      font-size: 13px;
-      line-height: 36px;
-      position: relative;
-      padding-bottom: 1px;
-    }
-
-    &.left {
-      padding: 0 0 0 58px;
-      text-align: left;
-      float: left;
-
-      .avatar {
-        left: 0;
-
-        .status {
-          right: 4px;
-        }
-      }
-
-      .text {
-        background: #ebebeb;
-        color: #333333;
-        border-radius: 8px 8px 8px 0;
-
-        &:before {
-          left: -30px;
-          border-right-color: #ebebeb;
-          border-right-width: 12px;
-        }
-      }
-
-      .time {
-        padding-left: 12px;
-        color: #333333;
-      }
-    }
-
-  }
+#classRoom > .chat {
+  min-height: 15vh;
 }
 
 $avatarSize: 4rem;
+.chat .avatar {
+  width: $avatarSize;
+  height: $avatarSize;
+}
 
-.chat {
+.users-box {
+  > div {
+    clear: left;
+  }
   .avatar {
-    width: $avatarSize;
-    height: $avatarSize;
-    position: absolute;
-
-    img {
-      display: block;
-      border-radius: $avatarSize / 2;
-      height: 100%;
+    width: $avatarSize / 1.5;
+    height: $avatarSize / 1.5;
+    float: left;
+  }
+  .name {
+    margin-left: $avatarSize - 1;
+    font-size: 1.6rem;
+    line-height: 1.4rem;
+  }
+  .status {
+    margin-left: $avatarSize - 1;
+    font-size: 1rem;
+    line-height: 1rem;
+    &::before {
+      content: "[";
+    }
+    &::after {
+      content: "]"
     }
   }
 }
 
-/*RIGHT*/
-.chat-body .answer.right {
-  padding: 0 58px 0 0;
-  float: right;
+.answer {
+  margin-bottom: 1rem;
+  .text {
+    position: relative;
+    padding: 12px;
+    font-size: 16px;
+    white-space: pre-wrap;
+
+    &:before {
+      content: "";
+      position: absolute;
+      display: block;
+      bottom: 0;
+      border: 18px solid transparent;
+      border-bottom-width: 0;
+    }
+  }
 
   .name {
-    text-align: right;
+    font-size: 1.6rem;
+    line-height: 1.2rem;
   }
+
+  .status {
+    font-size: 0.8rem;
+    line-height: 1.2rem;
+    &::before {
+      content: "["
+    }
+    &::after {
+      content: "]"
+    }
+  }
+
+  .time {
+    font-size: 0.7rem;
+    color: #5b6977;
+    line-height: 1.2rem;
+  }
+
+  > div {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 0.5rem;
+    > div {
+      margin: 0 3px;
+    }
+  }
+
+  &.right > div {
+    flex-direction: row-reverse;
+  }
+
 }
 
-.chat-body .answer.right .avatar {
-    right: 0;
-}
-.chat-body .answer.right .avatar .status {
-    left: 4px;
-}
-.chat-body .answer.right .text {
+.text {
+  .left & {
+    background: #ebebeb;
+    color: #333333;
+    border-radius: 8px 8px 8px 0;
+
+    &:before {
+      left: -30px;
+      border-right-color: #ebebeb;
+      border-right-width: 12px;
+    }
+  }
+  .right & {
     background: #7266ba;
     color: #ffffff;
     border-radius: 8px 8px 0 8px;
-}
-.chat-body .answer.right .text:before {
-    right: -30px;
-    border-left-color: #7266ba;
-    border-left-width: 12px;
-}
-.chat-body .answer.right .time {
-  text-align: right;
-  padding-right: 12px;
-  color: #333333;
+
+    &:before {
+      right: -30px;
+      border-left-color: #7266ba;
+      border-left-width: 12px;
+    }
+  }
 }
 
-/**************ADD FORM ***************/
-.chat-body .answer-add {
-    clear: both;
-    position: relative;
-    margin: 20px -20px -20px;
-    padding: 20px;
-    background: #46be8a;
-}
-.chat-body .answer-add textarea {
+.send-box {
+  background: #46be8a;
+  margin: 0;
+  border-radius: 0 0 4px 4px;
+  padding: 0.5rem;
+  display: flex;
+  textarea {
+    flex-grow: 1;
     border: none;
     background: none;
     display: block;
@@ -223,48 +131,45 @@ $avatarSize: 4rem;
     line-height: 20px;
     padding: 0;
     color: #ffffff;
-
+    -webkit-appearance: none;
+    border-radius: 0;
+    resize: none;
     &:focus {
       outline: none;
     }
-}
-.chat textarea {
-    -webkit-appearance: none;
-    border-radius: 0;
-}
-.chat-body .answer-add .answer-btn-1 {
-    background: url("http://91.234.35.26/iwiki-admin/v1.0.0/admin/img/icon-40.png") 50% 50% no-repeat;
-    right: 56px;
-}
-.chat-body .answer-add .answer-btn {
+    &::-webkit-input-placeholder {
+      color: #fff;
+    }
+    &::-moz-placeholder {
+      color: #fff;
+    }
+  }
+  .answer-btn {
     display: block;
     cursor: pointer;
     width: 36px;
     height: 36px;
-    position: absolute;
-    top: 50%;
-    margin-top: -18px;
-}
-.chat-body .answer-add .answer-btn-2 {
-    background: url("http://91.234.35.26/iwiki-admin/v1.0.0/admin/img/icon-41.png") 50% 50% no-repeat;
-    right: 20px;
-}
-.chat textarea::-webkit-input-placeholder {
-   color: #fff;
+    flex-grow: 0;
+    align-self: center;
+    background: url("assets/icon-41.png") 50% 50% no-repeat;
+    // background: url("http://91.234.35.26/iwiki-admin/v1.0.0/admin/img/icon-41.png") 50% 50% no-repeat;
+  }
 }
 
-.chat textarea:-moz-placeholder { /* Firefox 18- */
-   color: #fff;
-}
-
-.chat textarea::-moz-placeholder {  /* Firefox 19+ */
-   color: #fff;
-}
-
-.chat textarea:-ms-input-placeholder {
-   color: #fff;
-}
-.chat textarea {
-    -webkit-appearance: none;
-    border-radius: 0;
+.chat {
+  .panel-body {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .users-box {
+    max-height: 12vh;
+    overflow-y: auto;
+  }
+  .messages-box {
+    overflow-y: auto;
+    max-height: 50vh;
+  }
+  .send-box {
+    min-height: 5rem;
+  }
 }

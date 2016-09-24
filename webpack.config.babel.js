@@ -3,6 +3,8 @@ import webpack from 'webpack';
 import {dev} from './config/common';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import precss from 'precss';
+import autoprefixer from 'autoprefixer';
 
 const minsuffix = dev ? '' : '.min';
 
@@ -16,28 +18,12 @@ const config = {
     extensions: ['', '.js', '.jsx']
   },
   entry: {
-    app: ['./src/index.jsx'],
-    vendor: [
-      'babel-polyfill',
-      'moment',
-      'react-big-calendar',
-      'react-bootstrap',
-      'react-dom',
-      'react-dropzone',
-      'react-redux',
-      'react-router-bootstrap',
-      'react-router',
-      'react',
-      'redux-actions',
-      'redux-thunk',
-      'redux',
-      'socket.io-client',
-    ]
+    bundle: ['./src/index.jsx']
   },
   output: {
     path: path.resolve(__dirname, 'public'),
     publicPath: '/',
-    filename: `bundle${minsuffix}.js`
+    filename: `[name]${minsuffix}.js`
   },
   module: {
     loaders: [
@@ -46,17 +32,22 @@ const config = {
         loader: 'babel',
         exclude: /node_modules/,
         query: {
-          presets: [['es2015', {'loose': true}], 'react'],
-          plugins: ['transform-class-properties', 'transform-object-rest-spread']
+          presets: ['react', ['es2015', {loose: true}]],
+          plugins: [
+            'transform-class-properties',
+            'transform-object-rest-spread'
+          ].concat(dev ? 'react-hot-loader/babel' : [])
         }
       },
+      Object.assign(
+        {test: /\.scss$/},
+        dev
+          ? {loaders: ['style', 'css?sourceMap', 'postcss?sourceMap', 'sass?sourceMap']}
+          : {loader: ExtractTextPlugin.extract(['css?sourceMap','sass?sourceMap'])}
+      ),
       {
         test: /\.json$/,
         loader: 'json-loader'
-      },
-      {
-        test: /\.scss$/,
-        loader: ExtractTextPlugin.extract(['css?sourceMap','sass?sourceMap'])
       },
       {
         test: /\.pug$/,
@@ -78,11 +69,15 @@ const config = {
       path.resolve(__dirname, 'src/sass/')
     ]
   },
+  postcss: () => [precss, autoprefixer],
   devServer: {
     contentBase: 'public',
+    publicPath: '/',
     inline: true,
     hot: true,
-    historyApiFallback: true,
+    historyApiFallback: {
+      disableDotRule: true
+    },
     proxy: {
       '/api': {
         target: 'http://localhost:3000',
@@ -91,7 +86,6 @@ const config = {
     }
   },
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin('vendor', `vendor${minsuffix}.js`),
     new webpack.ProvidePlugin({'React': 'react'}),
     new webpack.SourceMapDevToolPlugin({
       test: [/bundle/, /main/],
@@ -102,18 +96,29 @@ const config = {
       template: 'src/index.pug',
       appMountId: 'root'
     }),
-    new ExtractTextPlugin('main.css')
   ]
 };
 
 if (dev) {
-  config.entry.app.unshift('webpack-dev-server/client?http://localhost:8080/', 'webpack/hot/dev-server');
-  config.plugins.push(new webpack.HotModuleReplacementPlugin());
+  config.entry.bundle.unshift('webpack/hot/dev-server', 'react-hot-loader/patch',);
+  config.plugins.unshift(new webpack.HotModuleReplacementPlugin());
 } else {
+  config.entry.bundle.unshift('babel-polyfill');
   config.plugins.push(
-    new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}}),
-    new webpack.DefinePlugin({'process.env': {'NODE_ENV': JSON.stringify('production')}})
+    new ExtractTextPlugin('main.css'),
+    new webpack.DefinePlugin({'process.env': {'NODE_ENV': JSON.stringify('production')}}),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: module => isExternal(module)
+    }),
+    new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}})
   );
 }
 
 export default config;
+
+function isExternal(module) {
+  const userRequest = module.userRequest;
+  if (typeof userRequest !== 'string') return false;
+  return userRequest.indexOf('/node_modules/') >= 0;
+}

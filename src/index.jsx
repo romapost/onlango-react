@@ -2,6 +2,7 @@ import {render} from 'react-dom';
 import {Router, browserHistory} from 'react-router';
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware, compose} from 'redux';
+import {AppContainer} from 'react-hot-loader';
 import reducer from 'reducers';
 import routes from 'routes';
 import socketMiddleware from './socketMiddleware';
@@ -15,7 +16,25 @@ const store = createStore(reducer, compose(...enhancers));
 
 document.addEventListener('DOMContentLoaded', () => {
   render(
-    <Provider store={store}><Router routes={routes} history={browserHistory} /></Provider>,
+    <AppContainer>
+      <Provider store={store}>
+        <Router routes={routes} history={browserHistory} />
+      </Provider>
+    </AppContainer>,
     document.querySelector('#root')
   );
 });
+
+if (module.hot) {
+  module.hot.accept('./routes', () => {
+    const routes = require('./routes').default;
+    render(
+      <AppContainer>
+        <Provider store={store}>
+          <Router routes={routes} history={browserHistory} />
+        </Provider>
+      </AppContainer>,
+      document.querySelector('#root')
+    );
+  });
+}

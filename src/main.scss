@@ -111,3 +111,13 @@ $breakpoints: (
   text-align: center;
   color: #556;
 }
+
+#classRoom {
+  .lessons > .panel {
+    min-height: 80vh;
+    h4 {
+      font-size: 3rem;
+      margin-top: 0;
+    }
+  }
+}
