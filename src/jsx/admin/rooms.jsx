@@ -70,7 +70,7 @@ class Rooms extends Component {
               <td>
                 <input type='text' name='name' value={this.state.name} />
               </td>
-              <td>{createdAt.toLocaleString()}</td>
+              <td>{moment(createdAt).format('HH:mm DD.MM.YY')}</td>
               <td>
                 <textarea rows={1} name='comment' value={this.state.comment}></textarea>
               </td>
