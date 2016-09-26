@@ -17,7 +17,15 @@ const messages = handleActions({
 }, []);
 
 const users = handleActions({
-  [getUserInfo]: (state, {payload}) => payload.self ? state : {...state, [payload.id]: payload}
+  [getUserInfo]: (state, {payload}) => payload.self ? state : {...state, [payload.id]: payload},
+  [changeChatStatus]: (state, {payload: {id, status}}) => {
+    const {[id]: {typing, ...user} = {}} = state; // eslint-disable-line no-unused-vars
+    switch (status) {
+      case 'typing': return {...state, [id]: {...user, typing: true}};
+      case 'idle': return {...state, [id]: {...user}};
+      default: return state;
+    }
+  }
 }, {});
 
 const usersOnline = handleActions({

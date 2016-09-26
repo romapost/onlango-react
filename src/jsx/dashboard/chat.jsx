@@ -3,7 +3,7 @@ import {findDOMNode} from 'react-dom';
 import {connect} from 'react-redux';
 import {Row, Col, Panel, Image} from 'react-bootstrap';
 import Sound from 'react-sound';
-import {getUserInfo, newMessage, setLastReceive} from 'actions';
+import {getUserInfo, newMessage, setLastReceive, changeChatStatus} from 'actions';
 import {emojify} from 'react-emojione';
 import moment from 'moment';
 import sprite from 'react-emojione/assets/emojione.sprites.png';
@@ -28,7 +28,20 @@ class Chat extends Component {
   requestedUsers = [];
   handleChange = (e) => {
     const {target: {name, value}} = e;
-    if (name) this.setState({[name]: value});
+    if (name) {
+      this.setState({[name]: value});
+      if (name == 'message') {
+        if (this.typingTimer) {
+          clearTimeout(this.typingTimer);
+        } else {
+          this.props.changeChatStatus('typing');
+        }
+        this.typingTimer = setTimeout(() => {
+          this.props.changeChatStatus('idle');
+          this.typingTimer = null;
+        }, 2000);
+      }
+    }
   }
   sendMessage = e => {
     e.preventDefault();
@@ -36,6 +49,11 @@ class Chat extends Component {
       const {message} = this.state;
       this.props.newMessage(message);
       this.setState({message: '', height: 30, beepSend: true});
+      if (this.typingTimer) {
+        clearTimeout(this.typingTimer);
+        this.props.changeChatStatus('idle');
+        this.typingTimer = null;
+      }
     }
   };
   checkForNewMessages(id, messages, lastReceive) {
@@ -51,10 +69,10 @@ class Chat extends Component {
     this.checkForNewMessages(id, messages, lastReceive);
   }
   componentDidMount() {
-    this.timer = setInterval(() => { this.forceUpdate() }, 10000);
+    this.timeUpdateTimer = setInterval(() => { this.forceUpdate() }, 10000);
   }
   componentWillUnmount() {
-    clearInterval(this.timer);
+    clearInterval(this.timeUpdateTimer);
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.messages.length != nextProps.messages.length) {
@@ -95,10 +113,10 @@ class Chat extends Component {
               if (this.unknownUsers.indexOf(e) == -1) this.unknownUsers.push(e);
               return;
             }
-            const {image = defaultUserpic, name, status = []} = users[e];
+            const {image = defaultUserpic, name, status = [], typing} = users[e];
             return <div key ={i} className='user'>
               <Image className='avatar' src={image} alt='User name' circle />
-              <div className='name'>{name}</div>
+              <div className='name'>{name}{typing && <span className='typing-mark'>печатает</span>}</div>
               <div className='status'>{status.join(', ')}</div>
             </div>;
           }
@@ -154,5 +172,5 @@ export default connect(
   ({chat: {messages, users, usersOnline, lastReceive}, user}) => (
     {messages, users, usersOnline, lastReceive, user}
   ),
-  {getUserInfo, newMessage, setLastReceive}
+  {getUserInfo, newMessage, setLastReceive, changeChatStatus}
 )(Chat);

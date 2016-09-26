@@ -24,14 +24,20 @@ $avatarSize: 4rem;
   }
   .status {
     margin-left: $avatarSize - 1;
-    font-size: 1rem;
-    line-height: 1rem;
+    font-size: 1.2rem;
+    line-height: 1.4rem;
     &::before {
       content: "[";
     }
     &::after {
       content: "]"
     }
+  }
+  .typing-mark {
+    margin-left: 0.5rem;
+    font-size: 1.2rem;
+    line-height: 1.2rem;
+    font-style: italic;
   }
 }
 
