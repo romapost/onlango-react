@@ -1,17 +1,21 @@
 import {Component} from 'react';
 import {findDOMNode} from 'react-dom';
-import {connect} from 'react-redux';
 import {Row, Col, Panel, Image} from 'react-bootstrap';
-import Sound from 'react-sound';
+import {connect} from 'react-redux';
 import {getUserInfo, newMessage, setLastReceive, changeChatStatus} from 'actions';
-import {emojify} from 'react-emojione';
+
 import moment from 'moment';
+moment.locale('ru');
+
+import {emojify} from 'react-emojione';
 import sprite from 'react-emojione/assets/emojione.sprites.png';
+const emojiOptions = {styles: {backgroundImage: `url(${sprite})`}};
+import EmojiList from './emojiList';
+
+import Sound from 'react-sound';
 import beepReceive from 'assets/bling1.mp3';
 import beepSend from 'assets/whoosh.mp3';
 
-moment.locale('ru');
-const backgroundImage = `url(${sprite})`;
 const defaultUserpic = '/userpic.jpg';
 const unknownUser = {
   name: 'unknown',
@@ -26,7 +30,10 @@ class Chat extends Component {
   };
   unknownUsers = [];
   requestedUsers = [];
-  handleChange = (e) => {
+  addEmoji = emoji => {
+    this.setState({message: this.state.message + emoji, emojiList: undefined});
+  };
+  handleChange = e => {
     const {target: {name, value}} = e;
     if (name) {
       this.setState({[name]: value});
@@ -146,7 +153,7 @@ class Chat extends Component {
             return <div key={i} className={`answer ${answer}`}>
               <div>
                 <Image className='avatar' src={image} alt='User name' circle/>
-                <div className='text'>{emojify(body, {styles: {backgroundImage}})}</div>
+                <div className='text'>{emojify(body, emojiOptions)}</div>
               </div>
               <div>
                 <div className='name'>{name}</div>
@@ -156,6 +163,7 @@ class Chat extends Component {
             </div>;
           })}
         </Col>
+        <EmojiList addEmoji={this.addEmoji} visible={this.state.emojiList} show={() => this.setState({emojiList: true})}/>
         <Col className='send-box' sm={12}>
           <textarea placeholder='Write a message' name='message' onKeyPress={e => {
             if (e.key == 'Enter' && !e.shiftKey) this.sendMessage(e);
