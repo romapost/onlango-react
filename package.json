@@ -85,7 +85,6 @@
     "reselect": "latest",
     "sass-loader": "latest",
     "scroll-into-view": "latest",
-    "socketio-file-upload": "^0.5.2",
     "style-loader": "latest",
     "tap-spec": "latest",
     "tape": "^4.6.2",
