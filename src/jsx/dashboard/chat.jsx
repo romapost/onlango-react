@@ -2,11 +2,13 @@ import {Component} from 'react';
 import {findDOMNode} from 'react-dom';
 import {Row, Col, Panel, Image} from 'react-bootstrap';
 import {connect} from 'react-redux';
-import {getUserInfo, newMessage, setLastReceive, changeChatStatus} from 'actions';
+import {getUserInfo, newMessage, setLastReceive, changeChatStatus, uploadFile} from 'actions';
+import Progress from 'react-progressbar';
 
 import moment from 'moment';
 moment.locale('ru');
 
+import convertCode from 'helpers/convertCode.jsx';
 import {emojify} from 'react-emojione';
 import sprite from 'react-emojione/assets/emojione.sprites.png';
 const emojiOptions = {styles: {backgroundImage: `url(${sprite})`}};
@@ -71,6 +73,11 @@ class Chat extends Component {
       this.props.setLastReceive(lastMessageId);
     }
   }
+  handleFileUpload = (event) => {
+    const [file] = event.target.files;
+    this.props.uploadFile(file);
+    event.target.value = null;
+  };
   componentWillMount() {
     const {user: {id}, messages, lastReceive} = this.props;
     this.checkForNewMessages(id, messages, lastReceive);
@@ -114,14 +121,14 @@ class Chat extends Component {
       <Row>
         <Col sm={12}><h4>Users</h4></Col>
         <Col className='users-box' sm={12}>
-          {usersOnline.map((e, i) => {
+          {usersOnline.map(e => {
             if (e == user.id) return;
             if (!(e in users)) {
               if (this.unknownUsers.indexOf(e) == -1) this.unknownUsers.push(e);
               return;
             }
             const {image = defaultUserpic, name, status = [], typing} = users[e];
-            return <div key ={i} className='user'>
+            return <div key ={e} className='user'>
               <Image className='avatar' src={image} alt='User name' circle />
               <div className='name'>{name}{typing && <span className='typing-mark'>печатает</span>}</div>
               <div className='status'>{status.join(', ')}</div>
@@ -129,6 +136,8 @@ class Chat extends Component {
           }
           )}
         </Col>
+      </Row>
+      <Row>
         <Col sm={12}><h4>Chat</h4></Col>
         <Col className='messages-box' sm={12} ref={c => { this.messagesList = findDOMNode(c) }} onScroll={e => {
           const {scrollTop, scrollHeight, offsetHeight} = e.target;
@@ -139,21 +148,22 @@ class Chat extends Component {
             this.setState({pinned: false});
           }
         }}>
-          {messages.map((e, i) => {
-            const self = e.userId == user.id;
-            let userinfo = self ? user : users[e.userId];
+          {messages.map(({id, userId, body, timestamp}) => {
+            const self = userId == user.id;
+            let userinfo = self ? user : users[userId];
             if (!userinfo) {
-              if (this.unknownUsers.indexOf(e.userId) == -1) this.unknownUsers.push(e.userId);
+              if (this.unknownUsers.indexOf(userId) == -1) this.unknownUsers.push(userId);
               userinfo = unknownUser;
             }
             let {name, image, status = []} = userinfo;
             if (!image) image = defaultUserpic;
             const answer = self ? 'right' : 'left';
-            const {body, timestamp} = e;
-            return <div key={i} className={`answer ${answer}`}>
+            return <div key={id} className={`answer ${answer}`}>
               <div>
                 <Image className='avatar' src={image} alt='User name' circle/>
-                <div className='text'>{emojify(body, emojiOptions)}</div>
+                <div className='text'>
+                  {convertCode(body).map(e => typeof e == 'string' ? emojify(e, emojiOptions) : e)}
+                </div>
               </div>
               <div>
                 <div className='name'>{name}</div>
@@ -163,22 +173,30 @@ class Chat extends Component {
             </div>;
           })}
         </Col>
+      </Row>
+      <Row>
         <EmojiList addEmoji={this.addEmoji} visible={this.state.emojiList} show={() => this.setState({emojiList: true})}/>
         <Col className='send-box' sm={12}>
           <textarea placeholder='Write a message' name='message' onKeyPress={e => {
             if (e.key == 'Enter' && !e.shiftKey) this.sendMessage(e);
           }} onChange={this.handleChange} value={this.state.message} ref='message' style={{height: this.state.height}}/>
           <span className='answer-btn' onClick={this.sendMessage}></span>
+          <label className='attach-btn'>
+            <input type='file' style={{display: 'none'}} onChange={this.handleFileUpload} />
+          </label>
         </Col>
       </Row>
+      {this.props.upload && <Row><Col>
+        <Progress completed={this.props.upload * 100 ^ 0} />
+      </Col></Row>}
       </Panel>
     </Col>;
   }
 }
 
 export default connect(
-  ({chat: {messages, users, usersOnline, lastReceive}, user}) => (
-    {messages, users, usersOnline, lastReceive, user}
+  ({chat: {messages, users, usersOnline, lastReceive}, user, upload}) => (
+    {messages, users, usersOnline, lastReceive, user, upload}
   ),
-  {getUserInfo, newMessage, setLastReceive, changeChatStatus}
+  {getUserInfo, newMessage, setLastReceive, changeChatStatus, uploadFile}
 )(Chat);

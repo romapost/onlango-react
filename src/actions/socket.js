@@ -17,4 +17,7 @@ export {
   joinRoom,
   leaveRoom,
   setLastReceive,
+  uploadFile,
+  uploadFileChunk,
+  uploadFileComplete
 } from './index';

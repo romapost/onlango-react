@@ -67,12 +67,6 @@ $avatarSize: 4rem;
   .status {
     font-size: 0.8rem;
     line-height: 1.2rem;
-    &::before {
-      content: "["
-    }
-    &::after {
-      content: "]"
-    }
   }
 
   .time {
@@ -118,6 +112,10 @@ $avatarSize: 4rem;
       border-left-color: #7266ba;
       border-left-width: 12px;
     }
+
+    a {
+      color: white;
+    }
   }
 }
 
@@ -160,6 +158,11 @@ $avatarSize: 4rem;
     background: url("assets/icon-41.png") 50% 50% no-repeat;
     // background: url("http://91.234.35.26/iwiki-admin/v1.0.0/admin/img/icon-41.png") 50% 50% no-repeat;
   }
+  .attach-btn {
+    width: 36px;
+    height: 36px;
+    background: url("assets/icon-40.png") 50% 50% no-repeat;
+  }
 }
 
 .chat {
@@ -178,4 +181,8 @@ $avatarSize: 4rem;
   .send-box {
     min-height: 5rem;
   }
+}
+
+.progressbar-container {
+  border-radius: 5px;
 }

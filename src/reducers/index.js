@@ -5,6 +5,7 @@ import user from './user';
 import chat from './chat';
 import teachers from './teachers';
 import rooms from './rooms';
+import upload from './upload';
 
 export default combineReducers({
   socket,
@@ -12,5 +13,6 @@ export default combineReducers({
   user,
   chat,
   teachers,
-  rooms
+  rooms,
+  upload,
 });

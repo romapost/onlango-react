@@ -71,7 +71,7 @@ const config = {
   },
   postcss: () => [precss, autoprefixer],
   devServer: {
-    contentBase: 'public',
+    contentBase: ['public', 'uploads'],
     publicPath: '/',
     inline: true,
     hot: true,

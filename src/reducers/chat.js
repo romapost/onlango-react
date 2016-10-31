@@ -36,17 +36,17 @@ const usersOnline = handleActions({
       default: return state;
     }
   },
-  [joinRoom]: (state, {payload: {usersOnline}}) => Array.isArray(usersOnline) ? usersOnline : []
+  [joinRoom]: (state, {payload: {usersOnline}}) => (Array.isArray(usersOnline) ? usersOnline : []),
 }, []);
 
 const lastReceive = handleActions({
   [setLastReceive]: (state, {payload}) => payload,
-  [joinRoom]: (state, {payload: {lastReceive}}) => lastReceive
+  [joinRoom]: (state, {payload: {lastReceive}}) => lastReceive,
 }, null);
 
 export default combineReducers({
   users,
   usersOnline,
   messages,
-  lastReceive
+  lastReceive,
 });

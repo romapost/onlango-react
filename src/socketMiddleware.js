@@ -19,7 +19,7 @@ function assignServerMeta(action) {
 }
 
 export default ({dispatch}) => {
-  socket.on('connect', () => { console.log('connect'); dispatch(socketConnected()) });
+  socket.on('connect', () => { console.log('connect'); dispatch(socketConnected(socket)) });
   socket.on('disconnect', () => { console.log('disconnect'); dispatch(socketDisconnected()) });
   socket.on('reconnect', () => { console.log('reconnect') });
 
@@ -27,11 +27,12 @@ export default ({dispatch}) => {
 
   return next => action => {
     console.log(action)
-    const {meta: {fromServer, passNext, cb} = {}} = action;
+    const {meta: {fromServer, passNext, cb, dsp} = {}} = action;
     if (!fromServer && socket.connected && list.indexOf(action.type) !== -1) {
       if (!fromServer && socket) {
         const data = ['dispatch', action];
-        if (typeof cb == 'function') data.push(cb);
+        if (typeof dsp == 'function') data.push(dsp(dispatch));
+        else if (typeof cb == 'function') data.push(cb);
         socket.emit(...data);
       }
       if (passNext) next(action);
