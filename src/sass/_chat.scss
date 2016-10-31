@@ -117,6 +117,9 @@ $avatarSize: 4rem;
       color: white;
     }
   }
+  img {
+    max-width: 100%;
+  }
 }
 
 .send-box {
