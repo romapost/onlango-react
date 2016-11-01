@@ -91,6 +91,7 @@ $avatarSize: 4rem;
 }
 
 .text {
+  word-break: break-all;
   .left & {
     background: #ebebeb;
     color: #333333;

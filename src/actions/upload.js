@@ -15,7 +15,9 @@ const uploadFile = createAction(
     const {size} = file;
     return {
       dsp: dispatch => {
-        const chunkSize = Math.ceil(size/100);
+        let chunkSize = Math.ceil(size/100);
+        if (chunkSize < 10240) chunkSize = 10240;
+        else if (chunkSize > 1024000) chunkSize = 1024000;
         const reader = new FileReader();
         reader.onload = event => {
           dispatch(uploadFileChunk(event.target.result, sendChunk));
