@@ -152,19 +152,20 @@ $avatarSize: 4rem;
       color: #fff;
     }
   }
-  .answer-btn {
+  .answer-btn,
+  .attach-btn {
     display: block;
     cursor: pointer;
     width: 36px;
     height: 36px;
     flex-grow: 0;
     align-self: center;
+  }
+  .answer-btn {
     background: url("assets/icon-41.png") 50% 50% no-repeat;
     // background: url("http://91.234.35.26/iwiki-admin/v1.0.0/admin/img/icon-41.png") 50% 50% no-repeat;
   }
   .attach-btn {
-    width: 36px;
-    height: 36px;
     background: url("assets/icon-40.png") 50% 50% no-repeat;
   }
 }
