@@ -22,7 +22,7 @@ export default function convertCode(string) {
           href = content;
         }
         if (href) {
-          a.push(<a href={href}>{convertCode(content)}</a>);
+          a.push(<a href={href} target='_blank'>{convertCode(content)}</a>);
         }
         break;
       }
