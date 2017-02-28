@@ -1,7 +1,7 @@
-import {Component, PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {Link} from 'react-router';
 import {Col, Form, FormGroup, FormControl, Checkbox, Button} from 'react-bootstrap';
-import inputToData from 'inputToData';
+import inputToData from 'jsx/inputToData';
 
 class Register extends Component {
   static contextTypes = {

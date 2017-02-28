@@ -1,4 +1,4 @@
-import {Component} from 'react';
+import React, {Component} from 'react';
 import {Panel, Col, FormGroup, FormControl, ControlLabel, Button} from 'react-bootstrap';
 
 class ChangePasswordForm extends Component {
@@ -13,7 +13,7 @@ class ChangePasswordForm extends Component {
   };
   submitHandler = e => {
     e.preventDefault();
-    console.log(this.password)
+    console.log(this.password);
     this.props.changePassword(this.password);
   };
   setRetypeWarning = (retypeWarning, bool) => {

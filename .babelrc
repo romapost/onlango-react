@@ -1,0 +1,18 @@
+{
+  "plugins": [
+    "transform-class-properties",
+    "transform-object-rest-spread"
+  ],
+  "env": {
+    "browser": {
+      "presets": [
+        ["env", {"target": {"chrome": 55, "firefox": 50}}]
+      ]
+    },
+    "node": {
+      "presets": [
+        ["env", {"target": {"node": "current"}}]
+      ]
+    }
+  }
+}

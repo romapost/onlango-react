@@ -1,8 +1,8 @@
-import {PropTypes} from 'react';
+import React, {PropTypes} from 'react';
 import {Row, Col} from 'react-bootstrap';
 import Header from './header.jsx';
 import Sidebar from './sidebar.jsx';
-import Entrance, {Login} from 'entrance';
+import Entrance, {Login} from 'jsx/entrance';
 
 const Dashboard = ({children}, {socket: {authorized}}) => authorized ? <div id='dashboard'>
   <Header />

@@ -1,7 +1,7 @@
-import {PropTypes} from 'react';
+import React, {PropTypes} from 'react';
 import {Navbar, Nav, NavItem} from 'react-bootstrap';
 import {IndexLinkContainer, LinkContainer} from 'react-router-bootstrap';
-import AccountDropdown from 'accountDropdown';
+import AccountDropdown from 'jsx/accountDropdown';
 
 const Brand = ({active, ...props}) => <a href='/' {...props} >Onlango-react</a>;
 

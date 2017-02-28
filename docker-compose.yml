@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+
+  web:
+    image: nginx:alpine
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/conf.d/onlango.conf
+      - ./ssl:/etc/nginx/ssl/
+      - ./public:/srv
+
+  db:
+    image: mongo
+    volumes:
+      - ./data:/data/db
+
+  api:
+    image: node:alpine
+    depends_on:
+      - db
+    volumes:
+      - .:/srv
+    working_dir: /srv
+    command: npm start

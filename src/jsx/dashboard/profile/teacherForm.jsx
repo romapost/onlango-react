@@ -1,4 +1,4 @@
-import {Component} from 'react';
+import React, {Component} from 'react';
 import {Row, Col, FormGroup, FormControl, ControlLabel, Radio, Panel, HelpBlock, Button, Modal} from 'react-bootstrap';
 import {languages} from 'config';
 
@@ -196,7 +196,7 @@ class TeacherForm extends Component {
   openModal = () => { this.setState({showModal: true}) }
   closeModal = () => { this.setState({showModal: false}) };
   render() {
-    console.log(this.state, this.state.form)
+    console.log(this.state, this.state.form);
     return <Panel className='become-teacher modal-container'>
       <form onChange={this.changeHandler} onSubmit={this.submitHandler}>
         <Experience {...this.state.form} />

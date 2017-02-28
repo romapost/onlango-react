@@ -1,4 +1,4 @@
-import {Component} from 'react';
+import React, {Component} from 'react';
 import {Row, Col, Panel} from 'react-bootstrap';
 import {joinRoom, leaveRoom} from 'actions';
 import {connect} from 'react-redux';

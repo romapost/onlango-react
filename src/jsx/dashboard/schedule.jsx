@@ -1,4 +1,4 @@
-import {Component} from 'react';
+import React, {Component} from 'react';
 import {Row, Col, Panel, Button} from 'react-bootstrap';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';

@@ -1,7 +1,7 @@
-import {Component, PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {Link} from 'react-router';
-import inputToData from 'inputToData';
 import {Col, Form, FormGroup, FormControl, Button} from 'react-bootstrap';
+import inputToData from 'jsx/inputToData';
 
 class Login extends Component {
   static contextTypes = {

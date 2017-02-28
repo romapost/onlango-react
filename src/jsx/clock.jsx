@@ -1,4 +1,4 @@
-import {Component} from 'react';
+import React, {Component} from 'react';
 import {NavItem} from 'react-bootstrap';
 import moment from 'moment-timezone';
 import {tz} from 'config';

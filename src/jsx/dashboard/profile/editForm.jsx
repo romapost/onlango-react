@@ -1,4 +1,4 @@
-import {Component} from 'react';
+import React, {Component} from 'react';
 import {Image, Panel, Row, Col, Form, FormGroup, FormControl, ControlLabel, Button} from 'react-bootstrap';
 import Dropzone from 'react-dropzone';
 

@@ -1,4 +1,4 @@
-import {Component, PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {Grid} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {login, getUserInfo, logout} from 'actions';
@@ -25,7 +25,7 @@ class App extends Component {
       return s;
     }, {});
     if (!socket.connected && nextProps.socket.connected) {
-      console.log(token)
+      console.log(token);
       if (token) login({token});
       else if (access_token) this.props.login({access_token, state});
     }

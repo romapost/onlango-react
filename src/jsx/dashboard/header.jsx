@@ -1,6 +1,7 @@
+import React from 'react';
 import {Navbar} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
-import AccountDropdown from 'accountDropdown';
+import AccountDropdown from 'jsx/accountDropdown';
 
 export default props => <Navbar fluid>
   <Navbar.Header>

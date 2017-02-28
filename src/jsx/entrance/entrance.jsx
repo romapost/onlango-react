@@ -1,4 +1,4 @@
-import {Component, PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {Row, Col} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
 import {connect} from 'react-redux';

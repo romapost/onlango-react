@@ -1,4 +1,4 @@
-import {PropTypes} from 'react';
+import React, {PropTypes} from 'react';
 import {Button, Image, Panel, Col, Glyphicon} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
 
@@ -38,6 +38,6 @@ const Profile = (props, {user: {image = '/userpic.jpg', name, surname, country, 
 
 Profile.contextTypes = {
   user: PropTypes.object
-}
+};
 
 export default Profile;

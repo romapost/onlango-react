@@ -1,7 +1,7 @@
-import {PropTypes} from 'react';
+import React, {PropTypes} from 'react';
 import {Nav, NavDropdown, MenuItem, Image} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
-import Clock from 'clock';
+import Clock from 'jsx/clock';
 
 const AccountDropdown = (props, {user: {image = '/userpic.jpg', status = []}, logout, time}) =>
   <Nav pullRight>

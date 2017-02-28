@@ -1,11 +1,11 @@
-import App from 'app';
-import MainPage from 'mainPage';
-import NotFound from 'notFound';
-import Dashboard, {Profile, ProfileEdit, Schedule, ClassRoom} from 'dashboard';
-import Entrance, {Login, Register} from 'entrance';
-import TeachersList from 'teachersList';
-import TeacherInfo from 'teacherInfo';
-import Admin, {Rooms} from 'admin';
+import App from 'jsx/app';
+import MainPage from 'jsx/mainPage';
+import NotFound from 'jsx/notFound';
+import Dashboard, {Profile, ProfileEdit, Schedule, ClassRoom} from 'jsx/dashboard';
+import Entrance, {Login, Register} from 'jsx/entrance';
+import TeachersList from 'jsx/teachersList';
+import TeacherInfo from 'jsx/teacherInfo';
+import Admin, {Rooms} from 'jsx/admin';
 
 export default [
   {

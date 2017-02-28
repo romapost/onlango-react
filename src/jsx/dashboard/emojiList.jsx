@@ -1,3 +1,4 @@
+import React from 'react';
 import {Col} from 'react-bootstrap';
 import {emojify} from 'react-emojione';
 import sprite from 'react-emojione/assets/emojione.sprites.png';

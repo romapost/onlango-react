@@ -1,4 +1,4 @@
-import {Component, PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {Panel, Table, Button} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {getRoom, addRoom, editRoom, removeRoom} from 'actions';

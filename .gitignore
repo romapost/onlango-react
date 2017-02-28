@@ -1,8 +1,12 @@
 .*
 !/.gitignore
+!/.gitattributes
+!/.babelrc
+
+*.pem
 
 node_modules
-logs
+data
 public/userpics
 public/u
 tmp

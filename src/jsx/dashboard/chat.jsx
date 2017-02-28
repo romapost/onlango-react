@@ -11,12 +11,15 @@ moment.locale('ru');
 import convertCode from 'helpers/convertCode.jsx';
 import {emojify} from 'react-emojione';
 import sprite from 'react-emojione/assets/emojione.sprites.png';
+// const sprite = '/emojione.sprites.png';
 const emojiOptions = {styles: {backgroundImage: `url(${sprite})`}};
 import EmojiList from './emojiList';
 
 import Sound from 'react-sound';
 import beepReceive from 'assets/bling1.mp3';
 import beepSend from 'assets/whoosh.mp3';
+// const beepReceive = '/bling1.mp3';
+// const beepSend = '/whoosh.mp3';
 
 const defaultUserpic = '/userpic.jpg';
 const unknownUser = {

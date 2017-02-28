@@ -1,4 +1,4 @@
-import {Component, PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {Tab, Nav, NavItem, Panel} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {editUserInfo, submitUserInfo, uploadUserImage, changePassword, submitTeacherForm} from 'actions';

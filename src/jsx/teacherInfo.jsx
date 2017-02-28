@@ -1,4 +1,4 @@
-import {Component} from 'react';
+import React, {Component} from 'react';
 import {Row, Col, Panel, Image, Button} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {getTeacherInfo} from 'actions';

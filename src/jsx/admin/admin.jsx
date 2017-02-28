@@ -1,7 +1,7 @@
-import {PropTypes} from 'react';
+import React, {PropTypes} from 'react';
 import {Row, Col} from 'react-bootstrap';
 import Sidebar from './sidebar';
-import {Header} from 'dashboard';
+import {Header} from 'jsx/dashboard';
 
 const Admin = ({children}, {router, user: {id, status = []}}) => {
   if (!id) {
