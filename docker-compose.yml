@@ -4,6 +4,8 @@ services:
 
   web:
     image: nginx:alpine
+    depends_on:
+      - api
     ports:
       - 80:80
       - 443:443
