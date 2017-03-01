@@ -11,7 +11,10 @@
     },
     "node": {
       "presets": [
-        ["env", {"target": {"node": "current"}}]
+        ["env", {
+          "target": {"node": true},
+          "exclude": ["transform-regenerator"]
+        }]
       ]
     }
   }

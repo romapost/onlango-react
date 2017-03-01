@@ -10,8 +10,8 @@ export default {
     if (!user) return getUserInfo(new Error('user not found'));
     if (!('name' in user) && 'email' in user) user.name = user.email.replace(/@.*/, '');
     const info = userInfo(user, self);
-    console.log('got info', info)
-    console.log('self', !id)
+    console.log('got info', info);
+    console.log('self', !id);
     if (self) info.self = true;
     return getUserInfo(info);
   },
@@ -36,7 +36,7 @@ export default {
   },
   async [uploadUserImage](data, socket) {
     const {userId: _id} = socket;
-    const {value: {image}} = await updateOne('users', {_id}, {$set: {image: await processUserImage(data)}});
+    const {image} = await updateOne('users', {_id}, {$set: {image: await processUserImage(data)}});
     return getUserInfo({self: true, image});
   },
   async [changePassword](password, socket) {

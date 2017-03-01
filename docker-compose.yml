@@ -3,7 +3,8 @@ version: '3'
 services:
 
   web:
-    image: nginx:alpine
+    build:
+      context: ./docker/nginx
     depends_on:
       - api
     ports:
@@ -11,7 +12,7 @@ services:
       - 443:443
     volumes:
       - ./config/nginx.conf:/etc/nginx/conf.d/onlango.conf
-      - ./ssl:/etc/nginx/ssl/
+      - ./ssl:/etc/nginx/ssl
       - ./public:/srv
 
   db:
@@ -20,7 +21,7 @@ services:
       - ./data:/data/db
 
   api:
-    image: node:alpine
+    image: node:7.5
     depends_on:
       - db
     volumes:
