@@ -1,9 +1,9 @@
-import {connect, disconnect, db} from '../lib/db';
-import {languages} from '../config/common';
+import {connect, disconnect, db} from './server/helpers/db';
+import {languages} from './config/common';
 import fs from 'fs';
 import path from 'path';
 
-const pics = fs.readdirSync(path.resolve(__dirname, '../public/userpics'));
+const pics = fs.readdirSync(path.resolve(__dirname, 'public/userpics'));
 
 function random(n = 1) {
   return Math.floor(Math.random() * n);

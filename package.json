@@ -15,7 +15,8 @@
     "dev": "npm run nodemon & npm run webpack & npm run browser-sync",
     "build": "BABEL_ENV=browser NODE_ENV=production webpack --progress",
     "start": "BABEL_ENV=node NODE_ENV=production NODE_PATH=server node server",
-    "test": "NODE_PATH=server node -r babel-register ${@:-test/**} | tap-spec"
+    "test": "NODE_PATH=server node -r babel-register ${@:-test/**} | tap-spec",
+    "create-teachers": "BABEL_ENV=node NODE_PATH=server node -r babel-register createFakeTeachers.js"
   },
   "dependencies": {
     "babel-core": "^6.23.1",
