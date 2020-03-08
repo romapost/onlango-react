@@ -1,12 +1,12 @@
-### Установка
+### Project Setup
 
-Предварительно требуется docker и docker-compose.
+Clone this repository or create a fork in your GitHub, and then clone that instead. The following command will create a copy on your computer.
 
 ```
 git clone https://github.com/romapost/onlango-react
 cd onlango-react
 ```
-SSL сертификат `cert.pem` и приватный ключ сервера `privkey.pem` необходимо положить в папку `ssl`.
+Docker
 ```
 docker-compose run api npm install --production
 docker-compose up
